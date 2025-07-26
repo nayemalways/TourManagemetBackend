@@ -13,7 +13,10 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
         // IF USER EXIST RETURN FROM HERE
         const ExistingUser = await User.findOne({email});
         if(ExistingUser) {
-           throw new AppError(httpStatus.BAD_REQUEST, "User already exist")
+           return res.status(httpStatus.CONFLICT).json({
+            success: false,
+            message: "User already exists with this email"
+           })
         } 
 
         // INVOKED SERVICE FUNCTION

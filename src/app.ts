@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { router } from './app/routes';
 import { globalErrorHandler } from './app/middlewares/globalErrorHandler';
-import httpStatus from 'http-status-codes';
+import { NotFound } from './app/middlewares/NotFound';
 
 
 const app = express();
@@ -23,10 +23,6 @@ app.use(globalErrorHandler);
 
 
 // NO ROUTE MATCH
-app.use((req: Request, res: Response) => {
-    res.status(httpStatus.NOT_FOUND).json({
-        message: "No Route Found"
-    })
-})
+app.use(NotFound)
 
 export default app;
