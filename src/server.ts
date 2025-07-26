@@ -25,6 +25,7 @@ const startServer = async () => {
     }
 }
 
+// Booom and start the server
 startServer();
 
 
