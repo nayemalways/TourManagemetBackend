@@ -1,42 +1,36 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { NextFunction, Request, Response } from "express";
-import { User } from "./user.model";
-import httpStatus from 'http-status-codes';
 import { UserService } from "./user.service";
-import AppError from "../../errorHelpers/AppError";
+import httpStatus from 'http-status-codes';
+import { CatchAsync } from "../../utils/CatchAsync";
+ 
+
+// Create a user
+const createUser = CatchAsync( async (req: Request, res: Response, next: NextFunction) => {
+    const user = await UserService
+    .CreateUserService(req.body); // INVOKED SERVICE FUNCTION
+    
+    // RESPONSE BACK
+    res.status(httpStatus.CREATED).json({
+        success: true,
+        message: `User Created Successfully`,
+        user
+    })
+})
 
 
-const createUser = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { email } = req.body;
-
-        // IF USER EXIST RETURN FROM HERE
-        const ExistingUser = await User.findOne({email});
-        if(ExistingUser) {
-           return res.status(httpStatus.CONFLICT).json({
-            success: false,
-            message: "User already exists with this email"
-           })
-        } 
-
-        // INVOKED SERVICE FUNCTION
-        const user = await UserService.CreateUserService(req.body);
-
-        // RESPONSE BACK
-        res.status(httpStatus.CREATED).json({
-            success: true,
-            message: `User Created Successfully`,
-            user
-        })
-
-        
-        
-    } catch (err: any) {
-         next(err);
-    }
-}
+// Get al users
+const allUsers = CatchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const allUsers = await UserService.GetAllUser();
+    res.status(httpStatus.OK).json({
+        success: true,
+        data: allUsers
+    })   
+})
 
 
 export const UserControllers = {
-    createUser
+    createUser,
+    allUsers
 }
