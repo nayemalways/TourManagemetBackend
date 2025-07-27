@@ -4,6 +4,7 @@ import { NextFunction, Request, Response } from "express";
 import { UserService } from "./user.service";
 import httpStatus from 'http-status-codes';
 import { CatchAsync } from "../../utils/CatchAsync";
+import { SendResponse } from "../../utils/SendResponse";
  
 
 // Create a user
@@ -12,21 +13,25 @@ const createUser = CatchAsync( async (req: Request, res: Response, next: NextFun
     .CreateUserService(req.body); // INVOKED SERVICE FUNCTION
     
     // RESPONSE BACK
-    res.status(httpStatus.CREATED).json({
+    SendResponse(res, {
+        statusCode: httpStatus.CREATED,
         success: true,
         message: `User Created Successfully`,
-        user
+        data: user
     })
 })
 
 
 // Get al users
 const allUsers = CatchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const allUsers = await UserService.GetAllUser();
-    res.status(httpStatus.OK).json({
+    const users = await UserService.GetAllUser();
+     
+    SendResponse(res, {
+        statusCode: httpStatus.OK,
         success: true,
-        data: allUsers
-    })   
+        message: `User Retrive Successfully`,
+        data: users
+    }) 
 })
 
 
