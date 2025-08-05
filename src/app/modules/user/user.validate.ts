@@ -1,8 +1,5 @@
  import z from "zod";
 
-
-
-
    export const UserZodSchema = z.object({
         name: z.string({ error: "Name should be string" })
             .min(2, { message: "Name must be at least 3 characters"})

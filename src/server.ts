@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import app from './app';
 import envVars from './config/env';
+import { superAdminCreate } from './app/utils/seedSuperAdmin';
 dotenv.config();
 
 
@@ -26,7 +27,11 @@ const startServer = async () => {
 }
 
 // Booom and start the server
-startServer();
+
+(async () => {
+    await startServer();
+    await superAdminCreate(); // Created Default super admin
+})()
 
 
 // SIGTERM signal detected and close the server

@@ -1,5 +1,7 @@
 import { model, Schema } from 'mongoose';
 import { IAuthProvider, IsActive, IUser, Role } from "./user.interface";
+import bcrypt from 'bcrypt';
+import env from '../../../config/env';
 
 // Embeded sub schema
 const authProviderSchema = new Schema<IAuthProvider>({
@@ -49,6 +51,14 @@ const userSchema = new Schema<IUser>({
 }, {
     timestamps: true,
     versionKey: false
+});
+
+
+// Hashed password
+userSchema.pre("save", async function(next) {
+    const hashedPassword = await bcrypt.hash(this.password as string, parseInt(env?.BCRYPT_SALT_ROUND));
+    this.password = hashedPassword;
+    next();
 })
 
 
