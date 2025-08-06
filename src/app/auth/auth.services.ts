@@ -12,15 +12,13 @@ const credentialsLogin = async (paylod : Partial<IUser>) => {
     const { email, password } = paylod;
 
     const isUserExists = await User.findOne({email});
-    if(!isUserExists) {
-        throw new AppError(httpStatus.BAD_REQUEST, "No User Found");
-    }
+    if(!isUserExists) throw new AppError(httpStatus.BAD_REQUEST, "No User Found");
+
 
     // Matching Password
-    const passwordMatch = bcrypt.compare(password as string, isUserExists.password as string);
-    if(!passwordMatch) {
-        throw new AppError(httpStatus.BAD_REQUEST, "Worng Password");
-    }
+    const passwordMatch = await bcrypt.compare(password as string, isUserExists.password as string);
+    if(!passwordMatch) throw new AppError(httpStatus.BAD_REQUEST, "Worng Password");
+    
 
     const jwtPayload = {
         userId: isUserExists._id,

@@ -4,7 +4,7 @@ export enum Role {
     SUPER_ADMIN = "SUPERADMIN",
     ADMIN = "ADMIN",
     USER = "USER",
-    GUID = "GUID"
+    GUIDE = "GUIDE"
 }
 
 export enum IsActive {
