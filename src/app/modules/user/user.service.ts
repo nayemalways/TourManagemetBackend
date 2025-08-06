@@ -1,7 +1,10 @@
+import { JwtPayload } from "jsonwebtoken";
 import AppError from "../../errorHelpers/AppError";
-import { IAuthProvider, IUser } from "./user.interface";
+import { IAuthProvider, IUser, Role } from "./user.interface";
 import { User } from "./user.model";
-import  httpStatus  from 'http-status-codes';
+import  statusCode from 'http-status-codes';
+import bcrypt from 'bcrypt';
+import env from "../../../config/env";
 
 
 // Create User
@@ -10,7 +13,7 @@ import  httpStatus  from 'http-status-codes';
     const isUserExist = await User.findOne({email});
 
     if(isUserExist) {
-         throw new AppError(httpStatus.BAD_REQUEST, "User Already Exist");
+         throw new AppError(statusCode.BAD_REQUEST, "User Already Exist");
     } 
 
 //     const hashedPassword = await bcrypt.hash(password as string, 10);
@@ -26,7 +29,48 @@ const GetAllUser = async () => {
      return users;
 } 
 
+// Update Single User
+const updateUserService = async (userId: string, payload: Partial<IUser>, decodedToken: JwtPayload) => {
+
+    const isUserExist = await User.findOne({_id: userId});
+
+    if (!isUserExist) {
+        throw new AppError(statusCode.NOT_FOUND, "User Not Found");
+    }
+
+    // Role Based Role Update
+    if(payload?.role) {
+        if(decodedToken.role === Role.USER || decodedToken.role === Role.GUIDE) {
+            throw new AppError(statusCode.FORBIDDEN, "You are not permitted to change");
+        }
+
+        if(payload.role === Role.SUPER_ADMIN && decodedToken.role === Role.ADMIN) {
+            throw new AppError(statusCode.FORBIDDEN, "You are not permitted to change");
+        }
+    }
+
+    
+
+    // Active, Deleted and Verified based update
+    if(payload.isActive || payload.isDeleted || payload.isVerified) {
+        if(decodedToken.role === Role.USER || decodedToken.role === Role.GUIDE) {
+            throw new AppError(statusCode.FORBIDDEN, "You are not permitted to change");
+        }
+    }
+
+
+    // Hashed Password
+    if(payload.password) {
+        payload.password = await bcrypt.hash(payload.password, Number(env?.BCRYPT_SALT_ROUND));
+    }
+
+    // Update User
+    const updatedUser = await User.findOneAndUpdate({_id: userId} , payload, {new: true, runValidators: true});
+    return updatedUser;
+}
+
 export const UserService = {
     CreateUserService,
-    GetAllUser
+    GetAllUser,
+    updateUserService
 }
