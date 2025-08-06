@@ -42,8 +42,7 @@ const allUsers = CatchAsync(async (req: Request, res: Response, next: NextFuncti
 const updateUser = CatchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.params.userId;
     const payload = req.body;
-    const accessToken = req.headers.authorization;
-    const decodedToken = verifyToken(accessToken as string, env.JWT_SECRET) as JwtPayload;
+    const decodedToken = req.user; // From auth.middleware.ts
     const users = await UserService.updateUserService(userId, payload, decodedToken);
      
     SendResponse(res, {
