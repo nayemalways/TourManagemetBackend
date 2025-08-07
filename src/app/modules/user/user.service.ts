@@ -33,36 +33,26 @@ const GetAllUser = async () => {
 const updateUserService = async (userId: string, payload: Partial<IUser>, decodedToken: JwtPayload) => {
 
     const isUserExist = await User.findOne({_id: userId});
-
-    if (!isUserExist) {
-        throw new AppError(statusCode.NOT_FOUND, "User Not Found");
-    }
+    if (!isUserExist) throw new AppError(statusCode.NOT_FOUND, "User Not Found");
 
     // Role Based Role Update
     if(payload?.role) {
-        if(decodedToken.role === Role.USER || decodedToken.role === Role.GUIDE) {
+        if(decodedToken.role === Role.USER || decodedToken.role === Role.GUIDE) 
             throw new AppError(statusCode.FORBIDDEN, "You are not permitted to change");
-        }
-
-        if(payload.role === Role.SUPER_ADMIN && decodedToken.role === Role.ADMIN) {
+        if(payload.role === Role.SUPER_ADMIN && decodedToken.role === Role.ADMIN) 
             throw new AppError(statusCode.FORBIDDEN, "You are not permitted to change");
-        }
-    }
-
-    
-
+    }    
     // Active, Deleted and Verified based update
-    if(payload.isActive || payload.isDeleted || payload.isVerified) {
-        if(decodedToken.role === Role.USER || decodedToken.role === Role.GUIDE) {
+    if(payload.isActive || payload.isDeleted || payload.isVerified)
+        if(decodedToken.role === Role.USER || decodedToken.role === Role.GUIDE) 
             throw new AppError(statusCode.FORBIDDEN, "You are not permitted to change");
-        }
-    }
+
 
 
     // Hashed Password
-    if(payload.password) {
+    if(payload.password)
         payload.password = await bcrypt.hash(payload.password, Number(env?.BCRYPT_SALT_ROUND));
-    }
+
 
     // Update User
     const updatedUser = await User.findOneAndUpdate({_id: userId} , payload, {new: true, runValidators: true});
