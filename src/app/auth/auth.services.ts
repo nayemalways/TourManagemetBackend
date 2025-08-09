@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import bcrypt from 'bcrypt';
 import AppError from "../errorHelpers/AppError";
 import  httpStatus  from 'http-status-codes';
 import { User } from "../modules/user/user.model";
 import { IUser } from "../modules/user/user.interface";
 import { createNewAccessTokenWithRefreshToken, createUserTokens } from "../utils/user.tokens";
+import { JwtPayload } from 'jsonwebtoken';
 
 
 
@@ -38,7 +40,22 @@ const getNewAccessToken = async (refreshToken: string) => {
       
 };
 
+
+const resetPassword = async (decodedToken: JwtPayload, oldPassword: string, newPassword: string) => { 
+     
+    const user = await User.findOne({_id: decodedToken.userId});
+ 
+    const isPasswordMatched = await bcrypt.compare(oldPassword, user!.password as string);
+    if(!isPasswordMatched) throw new AppError(httpStatus.BAD_REQUEST, "Password doesn't matched. Enter valid password");
+
+    user!.password = newPassword; // No need to hash password, because in user model we hashed password with pre hook middleware
+    await user!.save(); // Save document
+
+    return null;
+};
+
 export const authService =  {
     credentialsLogin,
-    getNewAccessToken
+    getNewAccessToken,
+    resetPassword
 }

@@ -15,7 +15,7 @@ const credentialsLogin = CatchAsync( async (req: Request, res: Response, next: N
     SendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: `New Access Token Genreted Successfully`,
+        message: `Login Successfully`,
         data: loginInfo
     })
 })
@@ -32,7 +32,7 @@ const getNewAccessToken = CatchAsync( async (req: Request, res: Response, next: 
     SendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: `User Logged in Successfully`,
+        message: `New Access Token Genreted Successfully`,
         data: newAccessToken
     })
 })
@@ -60,10 +60,27 @@ const logout = CatchAsync( async (req: Request, res: Response, next: NextFunctio
 })
 
 
+const resetPassword = CatchAsync( async (req: Request, res: Response, next: NextFunction) => {
+
+    const decodedToken = req.user;
+    const {oldPassword, newPassword} = req.body;
+    await authService.resetPassword(decodedToken, oldPassword, newPassword);
+
+
+    SendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: `Password Reset Successfully`,
+        data: null
+    })
+})
+
+
 
 
 export const authControllers =  {
     credentialsLogin,
     getNewAccessToken,
-    logout
+    logout,
+    resetPassword
 }
