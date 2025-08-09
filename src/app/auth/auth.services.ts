@@ -1,12 +1,12 @@
-import AppError from "../errorHelpers/AppError";
-import { User } from "../modules/user/user.model";
-import  httpStatus  from 'http-status-codes';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import bcrypt from 'bcrypt';
-import { IsActive, IUser } from "../modules/user/user.interface";
-import { createUserTokens } from "../utils/user.tokens";
-import { generateToken, verifyToken } from "../utils/jwt";
-import env from "../../config/env";
-import { JwtPayload } from "jsonwebtoken";
+import AppError from "../errorHelpers/AppError";
+import  httpStatus  from 'http-status-codes';
+import { User } from "../modules/user/user.model";
+import { IUser } from "../modules/user/user.interface";
+import { createNewAccessTokenWithRefreshToken, createUserTokens } from "../utils/user.tokens";
+import { JwtPayload } from 'jsonwebtoken';
+
 
 
 
@@ -34,33 +34,28 @@ const credentialsLogin = async (paylod : Partial<IUser>) => {
 };
 
 
-const getNewAccessToken = async (refreshToken: string) => {
-     
-    const tokenVerify = verifyToken(refreshToken, env.JWT_REFRESH_SECRET) as JwtPayload;
-
-    const isUserExists = await User.findOne({ email: tokenVerify.email }, {createdAt: 0, updatedAt: 0});
-
-    if(!isUserExists) 
-        throw new AppError(httpStatus.BAD_REQUEST, "User Doesn't Exist");
-    if(isUserExists.isActive === IsActive.BLOCKED || isUserExists.isActive === IsActive.INACTIVE ) 
-        throw new AppError(httpStatus.BAD_REQUEST, "The User BLOCKED or INACTIVE");
-    if(isUserExists.isDeleted )
-        throw new AppError(httpStatus.BAD_REQUEST, "The user was DELETED");
-
-    const jwtPayload = {
-            userId: isUserExists?._id,
-            email: isUserExists?.email,
-            role: isUserExists?.role
-    }
-         
-    const accessToken = generateToken(jwtPayload, env?.JWT_SECRET, env?.JWT_EXPIRATION);// Jsonwebtoken
-    return {
-        accessToken
-    } // return access token;
+const getNewAccessToken = async (refreshToken: string) => { 
+    const newAccessToken = await createNewAccessTokenWithRefreshToken(refreshToken);
+    return { accessToken: newAccessToken }  
       
+};
+
+
+const resetPassword = async (decodedToken: JwtPayload, oldPassword: string, newPassword: string) => { 
+     
+    const user = await User.findOne({_id: decodedToken.userId});
+ 
+    const isPasswordMatched = await bcrypt.compare(oldPassword, user!.password as string);
+    if(!isPasswordMatched) throw new AppError(httpStatus.BAD_REQUEST, "Password doesn't matched. Enter valid password");
+
+    user!.password = newPassword; // No need to hash password, because in user model we hashed password with pre hook middleware
+    await user!.save(); // Save document
+
+    return null;
 };
 
 export const authService =  {
     credentialsLogin,
-    getNewAccessToken
+    getNewAccessToken,
+    resetPassword
 }
