@@ -5,15 +5,11 @@ import { UserService } from "./user.service";
 import httpStatus from 'http-status-codes';
 import { CatchAsync } from "../../utils/CatchAsync";
 import { SendResponse } from "../../utils/SendResponse";
-import { verifyToken } from "../../utils/jwt";
-import env from "../../../config/env";
-import { JwtPayload } from "jsonwebtoken";
  
 
 // Create a user
 const createUser = CatchAsync( async (req: Request, res: Response, next: NextFunction) => {
-    const user = await UserService
-    .CreateUserService(req.body); // INVOKED SERVICE FUNCTION
+    const user = await UserService.CreateUserService(req.body);
     
     // RESPONSE BACK
     SendResponse(res, {

@@ -15,8 +15,6 @@ import env from "../../../config/env";
     if(isUserExist) {
          throw new AppError(statusCode.BAD_REQUEST, "User Already Exist");
     } 
-
-//     const hashedPassword = await bcrypt.hash(password as string, 10);
     
     const authProvider: IAuthProvider = { provider: "credentials", providerId: email as string };
     const user = await User.create({ email, auths: [authProvider] , ...rest });
