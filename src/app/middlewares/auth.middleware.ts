@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import AppError from "../errorHelpers/AppError";
 import { verifyToken } from "../utils/jwt";
-import  httpStatus  from 'http-status-codes';
-import env from "../../config/env";
 import { JwtPayload } from "jsonwebtoken";
 import { IsActive } from "../modules/user/user.interface";
 import { User } from "../modules/user/user.model";
+import AppError from "../errorHelpers/AppError";
+import  httpStatus  from 'http-status-codes';
+import env from "../../config/env";
 
 export const checkAuth =  (...restRole: string[]) => async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -24,9 +24,11 @@ export const checkAuth =  (...restRole: string[]) => async (req: Request, res: R
         
         // CHECK
         if(!verifyUser) throw new AppError(httpStatus.BAD_REQUEST, "Not Authorized");
-        if(!restRole.includes(verifyUser.role)) throw new AppError(httpStatus.BAD_GATEWAY, "You are not permitted to access this route");
+        
+        if(!restRole.includes(verifyUser.role)) 
+            throw new AppError(httpStatus.BAD_GATEWAY, "You are not permitted to access this route");
     
-        req.user = verifyUser;
+        req.user = verifyUser; // Set an global type for this line see on: interface > intex.d.ts
         next();
         
     } catch (error) { next(error) }

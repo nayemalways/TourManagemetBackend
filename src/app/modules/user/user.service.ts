@@ -3,8 +3,6 @@ import AppError from "../../errorHelpers/AppError";
 import { IAuthProvider, IUser, Role } from "./user.interface";
 import { User } from "./user.model";
 import  statusCode from 'http-status-codes';
-import bcrypt from 'bcrypt';
-import env from "../../../config/env";
 
 
 // Create User
@@ -15,8 +13,6 @@ import env from "../../../config/env";
     if(isUserExist) {
          throw new AppError(statusCode.BAD_REQUEST, "User Already Exist");
     } 
-
-//     const hashedPassword = await bcrypt.hash(password as string, 10);
     
     const authProvider: IAuthProvider = { provider: "credentials", providerId: email as string };
     const user = await User.create({ email, auths: [authProvider] , ...rest });
@@ -25,15 +21,12 @@ import env from "../../../config/env";
 
 // Get All Users
 const GetAllUser = async () => {
-     const users= await User.find({});
+     const users= await User.find({}).lean();
      return users;
 } 
 
 // Update Single User
 const updateUserService = async (userId: string, payload: Partial<IUser>, decodedToken: JwtPayload) => {
-
-    const isUserExist = await User.findOne({_id: userId});
-    if (!isUserExist) throw new AppError(statusCode.NOT_FOUND, "User Not Found");
 
     // Role Based Role Update
     if(payload?.role) {
@@ -47,17 +40,22 @@ const updateUserService = async (userId: string, payload: Partial<IUser>, decode
         if(decodedToken.role === Role.USER || decodedToken.role === Role.GUIDE) 
             throw new AppError(statusCode.FORBIDDEN, "You are not permitted to change");
 
+    if(decodedToken.role === Role.USER || decodedToken.role === Role.GUIDE) {
+        if(decodedToken.userId != userId) 
+            throw new AppError(statusCode.FORBIDDEN, "You can only update your own profile");
+    }
 
 
-    // Hashed Password
-    if(payload.password)
-        payload.password = await bcrypt.hash(payload.password, Number(env?.BCRYPT_SALT_ROUND));
+    if(payload.password === undefined)
+         throw new AppError(statusCode.FORBIDDEN, "You can't change your password from here");
 
 
     // Update User
     const updatedUser = await User.findOneAndUpdate({_id: userId} , payload, {new: true, runValidators: true});
     return updatedUser;
 }
+
+
 
 export const UserService = {
     CreateUserService,
