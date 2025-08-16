@@ -23,7 +23,7 @@ const credentialsLogin = CatchAsync( async (req: Request, res: Response, next: N
 
 const getNewAccessToken = CatchAsync( async (req: Request, res: Response, next: NextFunction) => {
 
-    const refreshToken = req.cookies.refreshToken; // ACCESS REFRESH TOKEN FROM USER REQUEST
+    const refreshToken = req.cookies.refreshToken; // GET REFRESH TOKEN FROM USER COOKIE
     if(!refreshToken) throw new AppError(httpStatus.BAD_REQUEST, "No Refresh Token Received!");
 
     const newAccessToken = await authService.getNewAccessToken(refreshToken);
