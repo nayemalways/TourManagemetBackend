@@ -40,11 +40,11 @@ const loadEnvVarbles = (): EnvInterfaces => {
         JWT_REFRESH_EXPIRATION: process.env.JWT_REFRESH_EXPIRATION as string,
         SUPER_ADMIN_GMAIL: process.env.SUPER_ADMIN_GMAIL as string,
         SUPER_ADMIN_PASSWORD: process.env.SUPER_ADMIN_PASSWORD as string,
-        EXPRESS_SESSION_SECRET: process.env.SUPER_ADMIN_PASSWORD as string,
-        FRONTEND_URL: process.env.SUPER_ADMIN_PASSWORD as string,
-        GOOGLE_CLIENT_SECRET: process.env.SUPER_ADMIN_PASSWORD as string,
-        GOOGLE_CLIENT_ID: process.env.SUPER_ADMIN_PASSWORD as string,
-        GOOGLE_CALLBACK_URL: process.env.SUPER_ADMIN_PASSWORD as string,
+        EXPRESS_SESSION_SECRET: process.env.EXPRESS_SESSION_SECRET as string,
+        FRONTEND_URL: process.env.FRONTEND_URL as string,
+        GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET as string,
+        GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID as string,
+        GOOGLE_CALLBACK_URL: process.env.GOOGLE_CALLBACK_URL as string,
     }
 }
 
