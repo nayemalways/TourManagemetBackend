@@ -56,6 +56,7 @@ const userSchema = new Schema<IUser>({
 
 // Hashed password
 userSchema.pre("save", async function(next) {
+    if(!this?.password) next();
     const hashedPassword = await bcrypt.hash(this.password as string, parseInt(env?.BCRYPT_SALT_ROUND));
     this.password = hashedPassword;
     next();
