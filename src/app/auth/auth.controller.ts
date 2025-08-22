@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from "express";
 import { CatchAsync } from "../utils/CatchAsync";
@@ -9,18 +10,37 @@ import { SetCookies } from "../utils/setCookie";
 import { JwtPayload } from "jsonwebtoken";
 import { createUserTokens } from "../utils/user.tokens";
 import env from "../../config/env";
-
+import passport from "passport";
+ 
 const credentialsLogin = CatchAsync( async (req: Request, res: Response, next: NextFunction) => {
      
-    const loginInfo = await authService.credentialsLogin(req.body);
-    SetCookies(res, loginInfo)
+    // const loginInfo = await authService.credentialsLogin(req.body);
 
-    SendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: `Login Successfully`,
-        data: loginInfo
-    })
+    passport.authenticate("local", async(err: any, user: any, info: any)=> {
+ 
+        if(err) 
+            return next( err  );
+
+         if (!user) 
+            return next(new AppError(httpStatus.FORBIDDEN, info.message));
+        
+
+        const userTokens = await createUserTokens(user);
+        // const {password, ...rest} = user.toObject();
+
+        SetCookies(res, userTokens);
+
+        SendResponse(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: `Login Successfully`,
+            data:  {
+                accessToken: userTokens.accessToken,
+                refreshToken: userTokens.refreshToken,
+                user: user
+            }
+        })
+    })(req, res, next);
 })
 
 
