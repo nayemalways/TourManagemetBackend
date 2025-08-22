@@ -6,13 +6,9 @@ TripPlanner is a comprehensive tour management system designed to simplify the p
 
 ## Key Features
  - Itinerary Management: Plan and customize daily schedules for each tour.
-
  - Booking & Reservations: Handle hotel, transport, and activity bookings efficiently.
-
  - Customer Management: Store and manage traveler profiles and preferences.
-
  - Payment & Invoice Tracking: Securely process payments and track invoices.
-
  - Analytics & Reporting: Gain insights on tours, customer trends, and revenue.
   
 ## Application Security
