@@ -4,15 +4,9 @@ import { IAuthProvider, IUser, Role } from "./user.interface";
 import { User } from "./user.model";
 import  statusCode from 'http-status-codes';
 
-
 // Create User
  const CreateUserService = async (payload: Partial<IUser>) => {
     const { email, ...rest } = payload;
-    const isUserExist = await User.findOne({email});
-
-    if(isUserExist) {
-         throw new AppError(statusCode.BAD_REQUEST, "User Already Exist");
-    } 
     
     const authProvider: IAuthProvider = { provider: "credentials", providerId: email as string };
     const user = await User.create({ email, auths: [authProvider] , ...rest });
@@ -44,10 +38,6 @@ const updateUserService = async (userId: string, payload: Partial<IUser>, decode
         if(decodedToken.userId != userId) 
             throw new AppError(statusCode.FORBIDDEN, "You can only update your own profile");
     }
-
-
-    if(payload.password === undefined)
-         throw new AppError(statusCode.FORBIDDEN, "You can't change your password from here");
 
 
     // Update User
