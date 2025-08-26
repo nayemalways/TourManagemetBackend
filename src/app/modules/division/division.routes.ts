@@ -9,7 +9,7 @@ import { DivisionZodSchema, UpdateDivisionZodSchema } from "./division.validatio
 const router = Router();
 
 router.post('/create', validateRequest(DivisionZodSchema), checkAuth(Role.ADMIN, Role.SUPER_ADMIN), divisionController.createDivision);
-router.get('/', checkAuth(...Object.values(Role)), divisionController.getDivision);
+router.get('/', divisionController.getDivision);
 router.patch('/:id', validateRequest(UpdateDivisionZodSchema), checkAuth(Role.ADMIN, Role.SUPER_ADMIN), divisionController.updateDivision);
 router.delete('/:id', checkAuth(Role.ADMIN, Role.SUPER_ADMIN), divisionController.deleteDivision);
 
