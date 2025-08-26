@@ -26,7 +26,7 @@ export const checkAuth =  (...restRole: string[]) => async (req: Request, res: R
         if(!verifyUser) throw new AppError(httpStatus.BAD_REQUEST, "Not Authorized");
         
         if(!restRole.includes(verifyUser.role)) 
-            throw new AppError(httpStatus.BAD_GATEWAY, "You are not permitted to access this route");
+            throw new AppError(httpStatus.FORBIDDEN, "You are not permitted to access this route");
     
         req.user = verifyUser; // Set an global type for this line see on: interface > intex.d.ts
         next();
