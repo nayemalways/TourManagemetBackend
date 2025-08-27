@@ -1,15 +1,32 @@
 import AppError from "../../errorHelpers/AppError";
+import { createSlug } from "../../utils/slugGenerator";
 import { IDivision } from "./division.interface";
 import Division from "./division.model";
 import  statusCode  from 'http-status-codes';
 
 
-const createDivision = async (payload: IDivision) => {
 
-    const isDivision = await Division.findOne({slug: payload.slug});
+const createDivision = async (payload: IDivision) => {
+   
+    const divisionName = payload.name;
+    const splitDivision = divisionName.split(" ");
+    let isDivisionFlagIncluded; // Is added Division with name like "Barishal Division" or "Barishal"
+    splitDivision.forEach((n) => {
+        isDivisionFlagIncluded = n === "Division";
+    })
+
+     if(!isDivisionFlagIncluded) {
+        payload.name = `${payload.name} Division`; // If not included, Add "Division". Result ex: Barishal Division
+     }
+
+
+    const slug = createSlug(payload.name);
+    const isDivision = await Division.findOne({slug});
     if(isDivision){ 
         return new AppError(statusCode.BAD_REQUEST, "Division Already Exist!");
     }
+
+    payload.slug = slug;
     const division = await Division.create(payload);
     return division;
 }
