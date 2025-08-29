@@ -5,8 +5,7 @@ export const createSlug = (title: string) => {
     if(!title) {
          throw new AppError(httpStatus.BAD_REQUEST, "Title not found in Slug Generator");
     }
-    const titleLowercase = title.toLowerCase();
-    const n = titleLowercase.split(" ");
-    const  slug = n.join("-")
+
+    const slug = title.toLowerCase().split(" ").join("-");
     return slug;
 }
