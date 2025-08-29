@@ -4,7 +4,7 @@ import Division from "./division.model";
 import  statusCode  from 'http-status-codes';
 
 
-
+// CREATE DIVISION
 const createDivision = async (payload: IDivision) => {
    
     //ex. If payload.name = Dhaka' make it Dhaka Division
@@ -23,15 +23,14 @@ const createDivision = async (payload: IDivision) => {
     return division;
 }
 
-
+// READ ALL DIVISION
 const getDivision = async () => {    
     const division = await Division.find().lean();
     return division;
 }
 
-
+// UPDATE DIVISION
 const updateDivision = async (divisionId: string, payload: Partial<IDivision>) => {
-
      //ex. If payload.name = Dhaka' make it Dhaka Division
     const divisionName = payload.name as string;
     const splitDivision = divisionName.split(" ");
@@ -63,7 +62,7 @@ const updateDivision = async (divisionId: string, payload: Partial<IDivision>) =
     return division;
 }
 
-
+// DELETE DIVISION
 const deleteDivision = async (divisionId: string) => {
 
     const isDivision = await Division.findOne({_id: divisionId});
@@ -75,6 +74,7 @@ const deleteDivision = async (divisionId: string) => {
 }
 
 
+// EXPORT ALL FUNCTION
 export const divisonServices = {
     createDivision,
     getDivision,
