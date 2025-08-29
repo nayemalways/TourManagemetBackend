@@ -1,13 +1,13 @@
 import AppError from "../../errorHelpers/AppError";
-import { createSlug } from "../../utils/slugGenerator";
 import { IDivision } from "./division.interface";
 import Division from "./division.model";
 import  statusCode  from 'http-status-codes';
 
 
-
+// CREATE DIVISION
 const createDivision = async (payload: IDivision) => {
    
+    //ex. If payload.name = Dhaka' make it Dhaka Division
     const divisionName = payload.name;
     const splitDivision = divisionName.split(" ");
     let isDivisionFlagIncluded; // Is added Division with name like "Barishal Division" or "Barishal"
@@ -19,36 +19,50 @@ const createDivision = async (payload: IDivision) => {
         payload.name = `${payload.name} Division`; // If not included, Add "Division". Result ex: Barishal Division
      }
 
-
-    const slug = createSlug(payload.name);
-    const isDivision = await Division.findOne({slug});
-    if(isDivision){ 
-        return new AppError(statusCode.BAD_REQUEST, "Division Already Exist!");
-    }
-
-    payload.slug = slug;
     const division = await Division.create(payload);
     return division;
 }
 
-
+// READ ALL DIVISION
 const getDivision = async () => {    
     const division = await Division.find().lean();
     return division;
 }
 
-
+// UPDATE DIVISION
 const updateDivision = async (divisionId: string, payload: Partial<IDivision>) => {
+     //ex. If payload.name = Dhaka' make it Dhaka Division
+    const divisionName = payload.name as string;
+    const splitDivision = divisionName.split(" ");
+    let isDivisionFlagIncluded; // Is added Division with name like "Barishal Division" or "Barishal"
+    splitDivision.forEach((n) => {
+        isDivisionFlagIncluded = n === "Division";
+    })
+
+     if(!isDivisionFlagIncluded) {
+        payload.name = `${payload.name} Division`; // If not included, Add "Division". Result ex: Barishal Division
+     }
 
     const isDivision = await Division.findOne({_id: divisionId});
-    if(!isDivision) 
-        return new AppError(statusCode.BAD_REQUEST, "Division not exist!");
+    if(!isDivision) {
+        throw new AppError(statusCode.BAD_REQUEST, "Division not found!");
+    }
+    // DUPLICATE DIVISIN CHECK
+    const duplicateDivision = await Division.findOne({
+        name: payload.name,
+        _id: {$ne: divisionId}
+    })
+    if(duplicateDivision) {
+        throw new AppError(statusCode.BAD_REQUEST, "Division already exist by this name");
+    }
 
+
+    // UPDATE
     const division = await Division.findOneAndUpdate({_id: divisionId}, payload, {new: true, runValidators: true});
     return division;
 }
 
-
+// DELETE DIVISION
 const deleteDivision = async (divisionId: string) => {
 
     const isDivision = await Division.findOne({_id: divisionId});
@@ -60,6 +74,7 @@ const deleteDivision = async (divisionId: string) => {
 }
 
 
+// EXPORT ALL FUNCTION
 export const divisonServices = {
     createDivision,
     getDivision,

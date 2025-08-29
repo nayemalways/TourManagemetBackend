@@ -5,6 +5,7 @@ import { divisonServices } from "./division.service";
 import { SendResponse } from "../../utils/SendResponse";
 import  statusCode  from 'http-status-codes';
 
+// CREATE DIVISION
 const createDivision = CatchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const division = await divisonServices.createDivision(req.body);
     SendResponse(res, {
@@ -15,6 +16,7 @@ const createDivision = CatchAsync(async (req: Request, res: Response, next: Next
     })
 });
 
+// READ ALL DIVISION
 const getDivision = CatchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const division = await divisonServices.getDivision();
     SendResponse(res, {
@@ -25,7 +27,7 @@ const getDivision = CatchAsync(async (req: Request, res: Response, next: NextFun
     })
 });
 
-
+// UPDATED DIVSION
 const updateDivision = CatchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const divisionId = req.params.id;
     const division = await divisonServices.updateDivision(divisionId, req.body);
@@ -37,7 +39,7 @@ const updateDivision = CatchAsync(async (req: Request, res: Response, next: Next
     })
 });
 
-
+// DELETE DIVISION
 const deleteDivision = CatchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const divisionId = req.params.id;
     const division = await divisonServices.deleteDivision(divisionId);
@@ -49,6 +51,8 @@ const deleteDivision = CatchAsync(async (req: Request, res: Response, next: Next
     })
 });
 
+
+// EXPORT DIVISION
  export const divisionController = {
     createDivision,
     getDivision,
