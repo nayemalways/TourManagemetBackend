@@ -5,18 +5,22 @@ import { Tour, TourType } from "./tour.model";
 import { createSlug } from "../../utils/slugGenerator";
 import { Request } from "express";
 
- 
 
+
+ //============TOUR TYPE SERVICE
+// CREATE TOUR TYPE
 const createTourType = async (payload: ITourType) => {
     const TourTypes = await TourType.create(payload);
     return TourTypes;
 }
 
+// READ ALL TOUR TYPES
 const getTourType = async () => {
     const TourTypes = await TourType.find().lean();
     return TourTypes;
 }
 
+// UPDATE A TOUR TYPE
 const updateTourType = async (tourTypeId: string, payload: ITourType) => { 
     const isTourType = await TourType.findOne({_id: tourTypeId});
     if(!isTourType) 
@@ -27,6 +31,7 @@ const updateTourType = async (tourTypeId: string, payload: ITourType) => {
     return update;
 }
 
+// DELETE A TOUR TYPE
 const deleteTourType = async (tourTypeId: string) => { 
     const isTourType = await TourType.findOne({_id: tourTypeId});
     if(!isTourType) 
@@ -36,15 +41,14 @@ const deleteTourType = async (tourTypeId: string) => {
     return tourTypes;
 }
 
+//================TOUR SERVICE=======================
+// CREATE TOUR
 const createTour = async (payload: ITour) => {
-
-    const titleSlug =createSlug(payload.title);
-    payload.slug = titleSlug;
-
     const tour = await Tour.create(payload);
     return tour;
 }
 
+//GET ALL TOUR
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const retriveAllTours = async (req: Request) => {
     const tour = await Tour.find({})
@@ -54,12 +58,12 @@ const retriveAllTours = async (req: Request) => {
     return tour;
 }
 
-
+// UPDATE TOUR
 const updateTours = async (tourId: string, payload: Partial<ITour>) => {
 
     const isTour = await Tour.findOne({_id: tourId});
     if(!isTour) {
-        throw new AppError(StatusCodes.BAD_REQUEST, "Tour doesn't exist!");
+        throw new AppError(StatusCodes.BAD_REQUEST, "Tour not found!");
     }
 
     if(payload.title) {
@@ -72,7 +76,7 @@ const updateTours = async (tourId: string, payload: Partial<ITour>) => {
     return updateTour;
 }
 
-
+// DELETE A TOUR
 const deleteTours = async (tourId: string) => {
 
     const isTour = await Tour.findOne({_id: tourId});
