@@ -1,4 +1,5 @@
-# TripPlanner -- A Tour Managemant Application 🍹⛱️
+# TripPlanner 🍹⛱️
+## A Tour Management Application
 
 ***status: Still in progress...***
 
@@ -12,10 +13,10 @@ TripPlanner is a comprehensive tour management system designed to simplify the p
  - Analytics & Reporting: Gain insights on tours, customer trends, and revenue.
   
 ## Application Security
- - Custom Authentication with Passport js
- - Google Authentication using Passport js
- - Added Rate Limiting to prevent ddos attack
- - Handled Global error handling wiht modifiying JS built in **New Error** class by building New AppError class. It's make sure a structured error like **status code** and **error message** by occuring any of the app error.
- - ZOD input validation for ensure the authentic users data.
- - Implemented mongoose advance features like pre hook middleware and sub-schema.
- - For better type safty I used **Typescript** everywhere. 
+ - Custom Authentication with Passport.js
+ - Google Authentication using Passport.js
+ - Added Rate Limiting to prevent DDoS attacks
+ - Handled Global error handling by modifying the JS built-in **New Error** class by building a New AppError class. It's make sure a structured error like **status code** and **error message** by occuring any of the app error.
+ - ZOD input validation to ensure the authentic users' data.
+ - Implemented mongoose advanced features like pre-hook middleware and sub-schema.
+ - For better type safty, I used **Typescript** everywhere. 
