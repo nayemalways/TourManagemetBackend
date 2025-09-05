@@ -18,10 +18,14 @@ interface EnvInterfaces {
     GOOGLE_CALLBACK_URL: string;
     EXPRESS_SESSION_SECRET: string;
     FRONTEND_URL: string;  
+    CLOUDINARY_SECRET: string;  
+    CLOUDINARY_API_KEY: string;  
+    CLOUDINARY_NAME: string;  
+    
 }
 
 const loadEnvVarbles = (): EnvInterfaces => {
-    const requireEnvVariables: string[] = ["PORT", "MONGO_URI", "JWT_SECRET", "NODE_ENV", "JWT_SECRET", "JWT_EXPIRATION", "JWT_REFRESH_SECRET", "JWT_REFRESH_EXPIRATION", "BCRYPT_SALT_ROUND", "SUPER_ADMIN_PASSWORD", "SUPER_ADMIN_GMAIL", "FRONTEND_URL", "GOOGLE_CLIENT_SECRET", "GOOGLE_CLIENT_ID", "GOOGLE_CALLBACK_URL", "EXPRESS_SESSION_SECRET"];
+    const requireEnvVariables: string[] = ["PORT", "MONGO_URI", "JWT_SECRET", "NODE_ENV", "JWT_SECRET", "JWT_EXPIRATION", "JWT_REFRESH_SECRET", "JWT_REFRESH_EXPIRATION", "BCRYPT_SALT_ROUND", "SUPER_ADMIN_PASSWORD", "SUPER_ADMIN_GMAIL", "FRONTEND_URL", "GOOGLE_CLIENT_SECRET", "GOOGLE_CLIENT_ID", "GOOGLE_CALLBACK_URL", "EXPRESS_SESSION_SECRET", "CLOUDINARY_NAME", "CLOUDINARY_SECRET", "CLOUDINARY_API_KEY"];
 
     requireEnvVariables.forEach(KEY => {
         if(!process.env[KEY]) {
@@ -45,6 +49,9 @@ const loadEnvVarbles = (): EnvInterfaces => {
         GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET as string,
         GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID as string,
         GOOGLE_CALLBACK_URL: process.env.GOOGLE_CALLBACK_URL as string,
+        CLOUDINARY_SECRET: process.env.GOOGLE_CALLBACK_URL as string,
+        CLOUDINARY_API_KEY: process.env.GOOGLE_CALLBACK_URL as string,
+        CLOUDINARY_NAME: process.env.GOOGLE_CALLBACK_URL as string,
     }
 }
 
