@@ -1,25 +1,27 @@
 # TripPlanner -- A Tour Managemant Application 🍹⛱️
 
-***status: Still in progress...***
+**_status: Still in progress..._**
 
 TripPlanner is a comprehensive tour management system designed to simplify the planning, organization, and execution of trips for travel agencies, tour operators, and individual travelers. With TripPlanner, you can effortlessly manage itineraries, bookings, accommodations, transport schedules, and customer information — all from a single, intuitive platform.
 
 ## Key Features
- - Itinerary Management: Plan and customize daily schedules for each tour.
 
- - Booking & Reservations: Handle hotel, transport, and activity bookings efficiently.
+- Itinerary Management: Plan and customize daily schedules for each tour.
 
- - Customer Management: Store and manage traveler profiles and preferences.
+- Booking & Reservations: Handle hotel, transport, and activity bookings efficiently.
 
- - Payment & Invoice Tracking: Securely process payments and track invoices.
+- Customer Management: Store and manage traveler profiles and preferences.
 
- - Analytics & Reporting: Gain insights on tours, customer trends, and revenue.
-  
+- Payment & Invoice Tracking: Securely process payments and track invoices.
+
+- Analytics & Reporting: Gain insights on tours, customer trends, and revenue.
+
 ## Application Security
- - Custom Authentication with Passport js
- - Google Authentication using Passport js
- - Added Rate Limiting to prevent ddos attack
- - Handled Global error handling wiht modifiying JS built in **New Error** class by building New AppError class. It's make sure a structured error like **status code** and **error message** by occuring any of the app error.
- - ZOD input validation for ensure the authentic users data.
- - Implemented mongoose advance features like pre hook middleware and sub-schema.
- - For better type safty I used **Typescript** everywhere. 
+
+- Custom Authentication with Passport js
+- Google Authentication using Passport js
+- Added Rate Limiting to prevent ddos attack
+- Handled Global error handling wiht modifiying JS built in **New Error** class by building New AppError class. It's make sure a structured error like **status code** and **error message** by occuring any of the app error.
+- ZOD input validation for ensure the authentic users data.
+- Implemented mongoose advance features like pre hook middleware and sub-schema.
+- For better type safty I used **Typescript** everywhere.

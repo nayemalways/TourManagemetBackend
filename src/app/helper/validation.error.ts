@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import mongoose from "mongoose";
-import { TErrorSources, TGenericsErrorResponse } from "../interface/error.types";
+import mongoose from 'mongoose';
+import {
+  TErrorSources,
+  TGenericsErrorResponse,
+} from '../interface/error.types';
 
-
-
-export  const validationError = (
+export const validationError = (
   err: mongoose.Error.ValidationError
 ): TGenericsErrorResponse => {
   const errorSources: TErrorSources[] = [];
@@ -18,7 +19,7 @@ export  const validationError = (
 
   return {
     statusCode: 400,
-    message: "Validation Error",
+    message: 'Validation Error',
     errorSources,
   };
 };

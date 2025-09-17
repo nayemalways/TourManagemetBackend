@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { TErrorSources, TGenericsErrorResponse } from "../interface/error.types";
+import {
+  TErrorSources,
+  TGenericsErrorResponse,
+} from '../interface/error.types';
 
 export const zodErrorHandler = (err: any): TGenericsErrorResponse => {
   const errorSources: TErrorSources[] = [];
@@ -12,7 +15,7 @@ export const zodErrorHandler = (err: any): TGenericsErrorResponse => {
 
   return {
     statusCode: 400,
-    message: "Zod Validation Error",
+    message: 'Zod Validation Error',
     errorSources,
   };
 };

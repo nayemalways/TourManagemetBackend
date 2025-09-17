@@ -1,68 +1,77 @@
 import { model, Schema } from 'mongoose';
-import { IAuthProvider, IsActive, IUser, Role } from "./user.interface";
+import { IAuthProvider, IsActive, IUser, Role } from './user.interface';
 import bcrypt from 'bcrypt';
-import env from '../../../config/env';
+import env from '../../config/env';
 
 // Embeded sub schema
-const authProviderSchema = new Schema<IAuthProvider>({
-    provider: {type: String, required: true},
-    providerId: {type: String, required: true},
-}, {
+const authProviderSchema = new Schema<IAuthProvider>(
+  {
+    provider: { type: String, required: true },
+    providerId: { type: String, required: true },
+  },
+  {
     versionKey: false,
-    _id: false
-})
+    _id: false,
+  }
+);
 
-const userSchema = new Schema<IUser>({
+const userSchema = new Schema<IUser>(
+  {
     name: {
-        type: String, required: true
+      type: String,
+      required: true,
     },
     email: {
-        type: String, unique: true
+      type: String,
+      unique: true,
     },
     password: {
-        type: String
+      type: String,
     },
     role: {
-        type: String, 
-        enum: Object.values(Role),
-        default: Role.USER
+      type: String,
+      enum: Object.values(Role),
+      default: Role.USER,
     },
     phone: {
-        type: String
+      type: String,
     },
     picture: {
-        type: String
+      type: String,
     },
     address: {
-        type: String
+      type: String,
     },
     isDeleted: {
-        type: Boolean, default: false
+      type: Boolean,
+      default: false,
     },
     isActive: {
-        type: String,
-        enum: Object.values(IsActive),
-        default: IsActive.ACTIVE
+      type: String,
+      enum: Object.values(IsActive),
+      default: IsActive.ACTIVE,
     },
     isVerified: {
-        type: Boolean, default: false
+      type: Boolean,
+      default: false,
     },
-    auths: [authProviderSchema]
-}, {
+    auths: [authProviderSchema],
+  },
+  {
     timestamps: true,
-    versionKey: false
-});
-
+    versionKey: false,
+  }
+);
 
 // Hashed password
-userSchema.pre("save", async function(next) {
-    if(!this?.password) next();
-    const hashedPassword = await bcrypt.hash(this.password as string, parseInt(env?.BCRYPT_SALT_ROUND));
-    this.password = hashedPassword;
-    next();
-})
+userSchema.pre('save', async function (next) {
+  if (!this?.password) next();
+  const hashedPassword = await bcrypt.hash(
+    this.password as string,
+    parseInt(env?.BCRYPT_SALT_ROUND)
+  );
+  this.password = hashedPassword;
+  next();
+});
 
-
-
-
-export const User = model<IUser>("User", userSchema);
+export const User = model<IUser>('User', userSchema);

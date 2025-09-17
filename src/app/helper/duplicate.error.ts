@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { TGenericsErrorResponse } from "../interface/error.types";
+import { TGenericsErrorResponse } from '../interface/error.types';
 
 export const handleDuplicateError = (err: any): TGenericsErrorResponse => {
   const matchedArray = err.message.match(/"([^]*)"/);
