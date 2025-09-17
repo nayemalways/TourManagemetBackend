@@ -1,10 +1,11 @@
-import StatusCodes from "http-status-codes";
-import AppError from "../../errorHelpers/AppError";
-import { ITour, ITourType } from "./tour.interface";
-import { Tour, TourType } from "./tour.model";
-import { createSlug } from "../../utils/slugGenerator";
-import { searchField } from "./tour.constant";
-import { QueryBuilder } from "../../utils/QueryBuilder";
+import StatusCodes from 'http-status-codes';
+import AppError from '../../errorHelpers/AppError';
+import { ITour, ITourType } from './tour.interface';
+import { Tour, TourType } from './tour.model';
+import { createSlug } from '../../utils/slugGenerator';
+import { searchField } from './tour.constant';
+import { QueryBuilder } from '../../utils/QueryBuilder';
+import { deleteImageFromCLoudinary } from '../../config/cloudinary.config';
 
 //============TOUR TYPE SERVICE
 // CREATE TOUR TYPE
@@ -43,10 +44,17 @@ const deleteTourType = async (tourTypeId: string) => {
 //================TOUR SERVICE=======================
 // CREATE TOUR
 const createTour = async (payload: ITour) => {
+  const existTour = await Tour.findOne({ title: payload.title });
+
+  if (existTour) {
+    throw new AppError(400, 'A tour with this title already exist!');
+  }
+
   const tour = await Tour.create(payload);
   return tour;
 };
 
+// GET ALL TOURS
 const retriveAllTours = async (query: Record<string, string>) => {
   const queryBuilder = new QueryBuilder(Tour.find(), query);
 
@@ -59,9 +67,9 @@ const retriveAllTours = async (query: Record<string, string>) => {
     .join()
     .build();
 
-    const meta = await queryBuilder.getMeta();
+  const meta = await queryBuilder.getMeta();
 
-    return {data: tour, meta};
+  return { data: tour, meta };
 };
 
 /*
@@ -124,7 +132,7 @@ const retriveAllTours = async (query: Record<string, string>) => {
 const updateTours = async (tourId: string, payload: Partial<ITour>) => {
   const isTour = await Tour.findOne({ _id: tourId });
   if (!isTour) {
-    throw new AppError(StatusCodes.BAD_REQUEST, "Tour not found!");
+    throw new AppError(StatusCodes.BAD_REQUEST, 'Tour not found!');
   }
 
   if (payload.title) {
@@ -132,9 +140,48 @@ const updateTours = async (tourId: string, payload: Partial<ITour>) => {
     payload.slug = updateSlug;
   }
 
-  Object.assign(isTour, payload);
-  const updateTour = await isTour.save();
-  return updateTour;
+  if (
+    payload.images &&
+    payload.images.length > 0 &&
+    isTour.images &&
+    isTour.images.length > 0
+  ) {
+    payload.images = [...new Set([...payload.images, ...isTour.images])];
+  }
+
+  if (
+    payload.deletedImages &&
+    payload.deletedImages.length > 0 &&
+    isTour.images &&
+    isTour.images.length > 0
+  ) {
+    const restDbImage = isTour?.images.filter(
+      (image) => !payload.images?.includes(image)
+    );
+
+    const updatePayloadImages = (payload?.images || []).filter(
+      (image) => !payload.deletedImages?.includes(image)
+    );
+
+    payload.images = [...new Set([...restDbImage, ...updatePayloadImages])];
+  }
+
+  const update = await Tour.findByIdAndUpdate(tourId, payload, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (
+    payload?.deletedImages &&
+    payload?.deletedImages.length > 0 &&
+    isTour?.images &&
+    isTour?.images.length > 0
+  ) {
+    await Promise.all(
+      payload?.deletedImages.map((url) => deleteImageFromCLoudinary(url))
+    );
+  }
+  return update;
 };
 
 // DELETE A TOUR
