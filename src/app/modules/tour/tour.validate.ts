@@ -34,7 +34,7 @@ export const TourZodScehma = z.object({
   maxGuest: z.number('Max Guets must be number').optional(),
   minAge: z.number('minAge must be number').optional(),
   division: z.string('division must be string'),
-  tourType: z.string('tourType be string')
+  tourType: z.string('tourType be string'),
 });
 export const UpdateTourZodScehma = z.object({
   title: z

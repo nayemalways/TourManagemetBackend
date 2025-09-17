@@ -6,14 +6,15 @@ export const validateRequest =
   (ZodSchema: ZodObject) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      
-       if (req.body.data) {
-            try {
-                req.body = JSON.parse(req.body.data)
-            } catch (error) {
-                return res.status(400).json({success : false, message : "Invalid Form-data formate"})
-            }
+      if (req.body.data) {
+        try {
+          req.body = JSON.parse(req.body.data);
+        } catch (error) {
+          return res
+            .status(400)
+            .json({ success: false, message: 'Invalid Form-data formate' });
         }
+      }
 
       req.body = await ZodSchema.parseAsync(req.body);
       next();

@@ -6,7 +6,6 @@ import { createSlug } from '../../utils/slugGenerator';
 import { searchField } from './tour.constant';
 import { QueryBuilder } from '../../utils/QueryBuilder';
 import { deleteImageFromCLoudinary } from '../../config/cloudinary.config';
- 
 
 //============TOUR TYPE SERVICE
 // CREATE TOUR TYPE
@@ -45,13 +44,11 @@ const deleteTourType = async (tourTypeId: string) => {
 //================TOUR SERVICE=======================
 // CREATE TOUR
 const createTour = async (payload: ITour) => {
- 
-  const existTour = await Tour.findOne({title: payload.title});
+  const existTour = await Tour.findOne({ title: payload.title });
 
-  if(existTour) {
-    throw new AppError(400, "A tour with this title already exist!");
+  if (existTour) {
+    throw new AppError(400, 'A tour with this title already exist!');
   }
-
 
   const tour = await Tour.create(payload);
   return tour;

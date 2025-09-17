@@ -68,18 +68,19 @@ const deleteTourType = CatchAsync(
 // CREATE TOUR
 const createTour = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
- 
-    if(!req.body.tourType) {
-      throw new AppError(404, "Tour type must required");
+    if (!req.body.tourType) {
+      throw new AppError(404, 'Tour type must required');
     }
-    if(!req.body?.division) {
-      throw new AppError(404, "Tour division must required");
+    if (!req.body?.division) {
+      throw new AppError(404, 'Tour division must required');
     }
 
     const payload = {
       ...req.body,
-      images: (req.files as Express.Multer.File[] || []).map((file)=> file.path)
-    }
+      images: ((req.files as Express.Multer.File[]) || []).map(
+        (file) => file.path
+      ),
+    };
 
     const tour = await tourTypeServices.createTour(payload);
 
@@ -120,7 +121,7 @@ const updateTours = CatchAsync(
       ...req.body,
       images: (req.files as Express.Multer.File[]).map((file) => file.path),
     };
- 
+
     const tour = await tourTypeServices.updateTours(id, payload);
 
     SendResponse(res, {

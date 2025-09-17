@@ -10,15 +10,15 @@ import {
   UpdateTourZodScehma,
 } from './tour.validate';
 
-
 const router = Router();
 
-
 // TOUR TYPE ROUTES
-router.post('/create-tour-type',
-validateRequest(TourTypesZodScehma),
-checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
-tourControllers.createTourType);
+router.post(
+  '/create-tour-type',
+  validateRequest(TourTypesZodScehma),
+  checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
+  tourControllers.createTourType
+);
 
 router.get('/tour-type', tourControllers.getTourType);
 
@@ -34,7 +34,6 @@ router.delete(
   checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
   tourControllers.deleteTourType
 );
-
 
 // TOUR ROUTES
 router.post(
