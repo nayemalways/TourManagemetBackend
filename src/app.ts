@@ -23,6 +23,7 @@ app.use(passport.session()); // Create a session and handled all the thing
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Welcome to the show');

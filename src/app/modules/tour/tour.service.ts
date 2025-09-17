@@ -5,7 +5,8 @@ import { Tour, TourType } from './tour.model';
 import { createSlug } from '../../utils/slugGenerator';
 import { searchField } from './tour.constant';
 import { QueryBuilder } from '../../utils/QueryBuilder';
-import { deleteCloudinaryImage } from '../../config/cloudinary.config';
+import { deleteImageFromCLoudinary } from '../../config/cloudinary.config';
+ 
 
 //============TOUR TYPE SERVICE
 // CREATE TOUR TYPE
@@ -44,10 +45,19 @@ const deleteTourType = async (tourTypeId: string) => {
 //================TOUR SERVICE=======================
 // CREATE TOUR
 const createTour = async (payload: ITour) => {
+ 
+  const existTour = await Tour.findOne({title: payload.title});
+
+  if(existTour) {
+    throw new AppError(400, "A tour with this title already exist!");
+  }
+
+
   const tour = await Tour.create(payload);
   return tour;
 };
 
+// GET ALL TOURS
 const retriveAllTours = async (query: Record<string, string>) => {
   const queryBuilder = new QueryBuilder(Tour.find(), query);
 
@@ -171,7 +181,7 @@ const updateTours = async (tourId: string, payload: Partial<ITour>) => {
     isTour?.images.length > 0
   ) {
     await Promise.all(
-      payload?.deletedImages.map((url) => deleteCloudinaryImage(url))
+      payload?.deletedImages.map((url) => deleteImageFromCLoudinary(url))
     );
   }
   return update;

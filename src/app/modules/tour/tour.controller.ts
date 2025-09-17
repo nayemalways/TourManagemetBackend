@@ -4,6 +4,7 @@ import { CatchAsync } from '../../utils/CatchAsync';
 import { tourTypeServices } from './tour.service';
 import { SendResponse } from '../../utils/SendResponse';
 import httpStatus from 'http-status-codes';
+import AppError from '../../errorHelpers/AppError';
 
 // CREATE TOUR TYPE
 const createTourType = CatchAsync(
@@ -67,7 +68,20 @@ const deleteTourType = CatchAsync(
 // CREATE TOUR
 const createTour = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const tour = await tourTypeServices.createTour(req.body);
+ 
+    if(!req.body.tourType) {
+      throw new AppError(404, "Tour type must required");
+    }
+    if(!req.body?.division) {
+      throw new AppError(404, "Tour division must required");
+    }
+
+    const payload = {
+      ...req.body,
+      images: (req.files as Express.Multer.File[] || []).map((file)=> file.path)
+    }
+
+    const tour = await tourTypeServices.createTour(payload);
 
     SendResponse(res, {
       statusCode: httpStatus.CREATED,
@@ -106,7 +120,7 @@ const updateTours = CatchAsync(
       ...req.body,
       images: (req.files as Express.Multer.File[]).map((file) => file.path),
     };
-    //  console.log("I am from controller", payload);
+ 
     const tour = await tourTypeServices.updateTours(id, payload);
 
     SendResponse(res, {

@@ -5,6 +5,7 @@ import { UserService } from './user.service';
 import httpStatus from 'http-status-codes';
 import { CatchAsync } from '../../utils/CatchAsync';
 import { SendResponse } from '../../utils/SendResponse';
+import { JwtPayload } from 'jsonwebtoken';
 
 // Create a user
 const createUser = CatchAsync(
@@ -40,7 +41,7 @@ const updateUser = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.params.userId;
     const payload = req.body;
-    const decodedToken = req.user; // From auth.middleware.ts
+    const decodedToken = req.user as JwtPayload; // From auth.middleware.ts
     const users = await UserService.updateUserService(
       userId,
       payload,
