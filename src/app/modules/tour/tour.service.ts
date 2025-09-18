@@ -156,7 +156,7 @@ const updateTours = async (tourId: string, payload: Partial<ITour>) => {
     isTour.images.length > 0
   ) {
     const restDbImage = isTour?.images.filter(
-      (image) => !payload.images?.includes(image)
+      (image: string) => !payload.deletedImages?.includes(image)
     );
 
     const updatePayloadImages = (payload?.images || []).filter(
