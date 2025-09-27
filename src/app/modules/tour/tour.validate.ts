@@ -14,7 +14,7 @@ export const TourZodScehma = z.object({
     .max(250, 'Too long title, should be maximum 250 char'),
   description: z
     .string('Description must be string')
-    .min(5, 'Description must be minumum 5 char.')
+    .min(5, 'Description must be minimum 5 char.')
     .optional(),
   image: z.array(z.string('Image must be string')).optional(),
   location: z.string('Location must be string').optional(),

@@ -46,7 +46,6 @@ router.post(
 
 router.get(
   '/',
-  validateRequest(UpdateTourZodScehma),
   tourControllers.retriveAllTours
 );
 
