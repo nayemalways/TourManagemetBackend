@@ -63,7 +63,7 @@ const updateDivision = async (
     }
 
 
-    if(payload?.thumbnail) {
+    if(payload?.thumbnail && isDivision?.thumbnail) {
         // delete existing images from cloudinar
         await deleteImageFromCLoudinary(isDivision?.thumbnail as string);
     }
@@ -84,12 +84,16 @@ const deleteDivision = async (divisionId: string) => {
   if (!isDivision)
     return new AppError(statusCode.BAD_REQUEST, 'Division not exist!');
 
-  const division = await Division.findOneAndDelete({ _id: divisionId });
-  return division;
+// delete existing images from cloudinary
+  if(isDivision?.thumbnail) {
+      await deleteImageFromCLoudinary(isDivision?.thumbnail as string);
+  }
+
+  return Division.findOneAndDelete({_id: divisionId});
 };
 
 // EXPORT ALL FUNCTION
-export const divisonServices = {
+export const divisionServices = {
   createDivision,
   getDivision,
   updateDivision,
