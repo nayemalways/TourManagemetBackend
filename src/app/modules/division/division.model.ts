@@ -38,7 +38,6 @@ divisionSchema.pre('save', async function (next) {
 
 divisionSchema.pre('findOneAndUpdate', async function (next) {
   const division = this.getUpdate() as Partial<IDivision>;
-  // console.log(division);
   const slug = createSlug(division.name as string);
   division.slug = slug;
   next();
