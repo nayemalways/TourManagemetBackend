@@ -39,7 +39,12 @@ const getDivision = CatchAsync(
 const updateDivision = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const divisionId = req.params.id;
-    const division = await divisonServices.updateDivision(divisionId, req.body);
+    // console.log(req.body)
+      const payload = {
+          ...req.body,
+          thumbnail: req.file?.path
+      }
+    const division = await divisonServices.updateDivision(divisionId, payload);
     SendResponse(res, {
       success: true,
       statusCode: statusCode.OK,

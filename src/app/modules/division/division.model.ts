@@ -1,7 +1,7 @@
-import mongoose, { Schema } from 'mongoose';
-import { IDivision } from './division.interface';
+import mongoose, {Schema} from 'mongoose';
+import {IDivision} from './division.interface';
 import AppError from '../../errorHelpers/AppError';
-import { createSlug } from '../../utils/slugGenerator';
+import {createSlug} from '../../utils/slugGenerator';
 import statusCode from 'http-status-codes';
 
 const divisionSchema = new Schema<IDivision>(
@@ -38,8 +38,9 @@ divisionSchema.pre('save', async function (next) {
 
 divisionSchema.pre('findOneAndUpdate', async function (next) {
   const division = this.getUpdate() as Partial<IDivision>;
-  const slug = createSlug(division.name as string);
-  division.slug = slug;
+  if(division.name) {
+      division.slug = createSlug(division.name as string);
+  }
   next();
 });
 
