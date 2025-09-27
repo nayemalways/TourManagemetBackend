@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import bcrypt from 'bcrypt';
-import AppError from '../errorHelpers/AppError';
+import AppError from '../../errorHelpers/AppError';
 import httpStatus from 'http-status-codes';
-import { User } from '../modules/user/user.model';
-import { IUser } from '../modules/user/user.interface';
+import { User } from '../user/user.model';
+import { IUser } from '../user/user.interface';
 import {
   createNewAccessTokenWithRefreshToken,
   createUserTokens,
-} from '../utils/user.tokens';
+} from '../../utils/user.tokens';
 import { JwtPayload } from 'jsonwebtoken';
 
 const credentialsLogin = async (paylod: Partial<IUser>) => {
