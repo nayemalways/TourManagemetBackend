@@ -8,7 +8,11 @@ import statusCode from 'http-status-codes';
 // CREATE DIVISION
 const createDivision = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const division = await divisonServices.createDivision(req.body);
+      const payload = {
+          ...req.body,
+          thumbnail: req.file?.path
+      };
+    const division = await divisonServices.createDivision(payload);
     SendResponse(res, {
       success: true,
       statusCode: statusCode.CREATED,
@@ -25,13 +29,13 @@ const getDivision = CatchAsync(
     SendResponse(res, {
       success: true,
       statusCode: statusCode.OK,
-      message: 'Division Retrive Successful',
+      message: 'Division Retrieve Successful',
       data: division,
     });
   }
 );
 
-// UPDATED DIVSION
+// UPDATED DIVISION
 const updateDivision = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const divisionId = req.params.id;

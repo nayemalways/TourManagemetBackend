@@ -1,5 +1,5 @@
 import AppError from '../../errorHelpers/AppError';
-import { IDivision } from './division.interface';
+import {IDivision} from './division.interface';
 import Division from './division.model';
 import statusCode from 'http-status-codes';
 
@@ -17,8 +17,7 @@ const createDivision = async (payload: IDivision) => {
     payload.name = `${payload.name} Division`; // If not included, Add "Division". Result ex: Barishal Division
   }
 
-  const division = await Division.create(payload);
-  return division;
+  return await Division.create(payload);
 };
 
 // READ ALL DIVISION
