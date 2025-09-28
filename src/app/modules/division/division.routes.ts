@@ -7,7 +7,7 @@ import {
   DivisionZodSchema,
   UpdateDivisionZodSchema,
 } from './division.validation';
-import {multerUpload} from "../../config/multer.config";
+import { multerUpload } from '../../config/multer.config';
 
 const router = Router();
 
@@ -22,7 +22,7 @@ router.get('/', divisionController.getDivision);
 router.patch(
   '/:id',
   checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
-    multerUpload.single('file'),
+  multerUpload.single('file'),
   validateRequest(UpdateDivisionZodSchema),
   divisionController.updateDivision
 );

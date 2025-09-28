@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { ZodObject } from 'zod';
 
-export const validateRequest = (ZodSchema: ZodObject) =>
+export const validateRequest =
+  (ZodSchema: ZodObject) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (req.body?.data) {
@@ -15,4 +16,3 @@ export const validateRequest = (ZodSchema: ZodObject) =>
       next(error);
     }
   };
-

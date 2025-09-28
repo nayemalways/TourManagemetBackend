@@ -88,7 +88,7 @@ const createTour = CatchAsync(
       statusCode: httpStatus.CREATED,
       success: true,
       message: 'Tour created successful!',
-      data: tour
+      data: tour,
     });
   }
 );

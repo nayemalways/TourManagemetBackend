@@ -8,10 +8,10 @@ import statusCode from 'http-status-codes';
 // CREATE DIVISION
 const createDivision = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-      const payload = {
-          ...req.body,
-          thumbnail: req.file?.path
-      };
+    const payload = {
+      ...req.body,
+      thumbnail: req.file?.path,
+    };
     const division = await divisionServices.createDivision(payload);
     SendResponse(res, {
       success: true,
@@ -40,10 +40,10 @@ const updateDivision = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const divisionId = req.params.id;
     // console.log(req.body)
-      const payload = {
-          ...req.body,
-          thumbnail: req.file?.path
-      }
+    const payload = {
+      ...req.body,
+      thumbnail: req.file?.path,
+    };
     const division = await divisionServices.updateDivision(divisionId, payload);
     SendResponse(res, {
       success: true,
