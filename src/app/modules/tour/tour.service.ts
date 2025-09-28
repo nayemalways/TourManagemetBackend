@@ -180,10 +180,14 @@ const updateTours = async (tourId: string, payload: Partial<ITour>) => {
 
 // DELETE A TOUR
 const deleteTours = async (tourId: string) => {
-  const isTour = await Tour.findOne({ _id: tourId });
+  const isTour = await Tour.findOne({ _id: tourId }) as ITour;
   if (!isTour) {
     throw new AppError(StatusCodes.BAD_REQUEST, "Tour doesn't exist!");
   }
+
+   await Promise.all(
+      (isTour?.images as string[]).map((url) => deleteImageFromCLoudinary(url))
+    );
 
   return await Tour.findOneAndDelete({ _id: tourId });
 };
