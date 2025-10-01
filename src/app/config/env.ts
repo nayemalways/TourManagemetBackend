@@ -17,9 +17,20 @@ interface EnvInterfaces {
   GOOGLE_CALLBACK_URL: string;
   EXPRESS_SESSION_SECRET: string;
   FRONTEND_URL: string;
+
   CLOUDINARY_SECRET: string;
   CLOUDINARY_API_KEY: string;
   CLOUDINARY_NAME: string;
+
+  STORE_ID: string;
+  STORE_PASSWORD: string;
+  SSL_PAYMENT_API: string;
+  CLIENT_SUCCESS_URL: string;
+  CLIENT_FAIL_URL: string;
+  CLIENT_CANCEL_URL: string;
+  BACKEND_SUCCESS_URL: string;
+  BACKEND_FAIL_URL: string;
+  BACKEND_CANCEL_URL: string;
 }
 
 const loadEnvVarbles = (): EnvInterfaces => {
@@ -43,6 +54,15 @@ const loadEnvVarbles = (): EnvInterfaces => {
     'CLOUDINARY_NAME',
     'CLOUDINARY_SECRET',
     'CLOUDINARY_API_KEY',
+    'STORE_ID',
+    'STORE_PASSWORD',
+    'SSL_PAYMENT_API',
+    'CLIENT_SUCCESS_URL',
+    'CLIENT_FAIL_URL',
+    'CLIENT_CANCEL_URL',
+    'BACKEND_SUCCESS_URL',
+    'BACKEND_FAIL_URL',
+    'BACKEND_CANCEL_URL'
   ];
 
   requireEnvVariables.forEach((KEY) => {
@@ -70,6 +90,15 @@ const loadEnvVarbles = (): EnvInterfaces => {
     CLOUDINARY_SECRET: process.env.CLOUDINARY_SECRET as string,
     CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY as string,
     CLOUDINARY_NAME: process.env.CLOUDINARY_NAME as string,
+    STORE_ID: process.env.STORE_ID as string,
+    STORE_PASSWORD: process.env.STORE_PASSWORD as string,
+    SSL_PAYMENT_API: process.env.SSL_PAYMENT_API as string,
+    CLIENT_SUCCESS_URL: process.env.CLIENT_SUCCESS_URL as string,
+    CLIENT_FAIL_URL: process.env.CLIENT_FAIL_URL as string,
+    CLIENT_CANCEL_URL: process.env.CLIENT_CANCEL_URL as string,
+    BACKEND_SUCCESS_URL: process.env.BACKEND_SUCCESS_URL as string,
+    BACKEND_FAIL_URL: process.env.BACKEND_FAIL_URL as string,
+    BACKEND_CANCEL_URL: process.env.BACKEND_CANCEL_URL as string,
   };
 };
 
