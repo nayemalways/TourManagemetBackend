@@ -2,6 +2,7 @@ import AppError from '../../errorHelpers/AppError';
 import { IDivision } from './division.interface';
 import Division from './division.model';
 import statusCode from 'http-status-codes';
+import { deleteImageFromCLoudinary } from '../../config/cloudinary.config';
 
 // CREATE DIVISION
 const createDivision = async (payload: IDivision) => {
@@ -17,47 +18,51 @@ const createDivision = async (payload: IDivision) => {
     payload.name = `${payload.name} Division`; // If not included, Add "Division". Result ex: Barishal Division
   }
 
-  const division = await Division.create(payload);
-  return division;
+  return await Division.create(payload);
 };
 
 // READ ALL DIVISION
-const getDivision = async () => {
-  const division = await Division.find().lean();
-  return division;
-};
+const getDivision = async () => await Division.find().lean();
 
 // UPDATE DIVISION
 const updateDivision = async (
   divisionId: string,
   payload: Partial<IDivision>
 ) => {
-  //ex. If payload.name = Dhaka' make it Dhaka Division
-  const divisionName = payload.name as string;
-  const splitDivision = divisionName.split(' ');
-  let isDivisionFlagIncluded; // Is added Division with name like "Barishal Division" or "Barishal"
-  splitDivision.forEach((n) => {
-    isDivisionFlagIncluded = n === 'Division';
-  });
-
-  if (!isDivisionFlagIncluded) {
-    payload.name = `${payload.name} Division`; // If not included, Add "Division". Result ex: Barishal Division
-  }
-
   const isDivision = await Division.findOne({ _id: divisionId });
   if (!isDivision) {
     throw new AppError(statusCode.BAD_REQUEST, 'Division not found!');
   }
-  // DUPLICATE DIVISIN CHECK
-  const duplicateDivision = await Division.findOne({
-    name: payload.name,
-    _id: { $ne: divisionId },
-  });
-  if (duplicateDivision) {
-    throw new AppError(
-      statusCode.BAD_REQUEST,
-      'Division already exist by this name'
-    );
+
+  //ex. If payload.name = Dhaka' make it Dhaka Division
+  if (payload?.name) {
+    const divisionName = payload?.name as string;
+    const splitDivision = divisionName.split(' ');
+    let isDivisionFlagIncluded; // Is added Division with name like "Barishal Division" or "Barishal"
+    splitDivision.forEach((n) => {
+      isDivisionFlagIncluded = n === 'Division';
+    });
+
+    if (!isDivisionFlagIncluded) {
+      payload.name = `${payload.name} Division`; // If not included, Add "Division". Result ex: Barishal Division
+    }
+
+    // DUPLICATE DIVISION CHECK
+    const duplicateDivision = await Division.findOne({
+      name: payload?.name,
+      _id: { $ne: divisionId },
+    });
+    if (duplicateDivision) {
+      throw new AppError(
+        statusCode.BAD_REQUEST,
+        'Division already exist by this name'
+      );
+    }
+  }
+
+  if (payload?.thumbnail && isDivision?.thumbnail) {
+    // delete existing images from cloudinar
+    await deleteImageFromCLoudinary(isDivision?.thumbnail as string);
   }
 
   // UPDATE
@@ -75,12 +80,16 @@ const deleteDivision = async (divisionId: string) => {
   if (!isDivision)
     return new AppError(statusCode.BAD_REQUEST, 'Division not exist!');
 
-  const division = await Division.findOneAndDelete({ _id: divisionId });
-  return division;
+  // delete existing images from cloudinary
+  if (isDivision?.thumbnail) {
+    await deleteImageFromCLoudinary(isDivision?.thumbnail as string);
+  }
+
+  return Division.findOneAndDelete({ _id: divisionId });
 };
 
 // EXPORT ALL FUNCTION
-export const divisonServices = {
+export const divisionServices = {
   createDivision,
   getDivision,
   updateDivision,

@@ -1,14 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from 'express';
 import { CatchAsync } from '../../utils/CatchAsync';
-import { divisonServices } from './division.service';
+import { divisionServices } from './division.service';
 import { SendResponse } from '../../utils/SendResponse';
 import statusCode from 'http-status-codes';
 
 // CREATE DIVISION
 const createDivision = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const division = await divisonServices.createDivision(req.body);
+    const payload = {
+      ...req.body,
+      thumbnail: req.file?.path,
+    };
+    const division = await divisionServices.createDivision(payload);
     SendResponse(res, {
       success: true,
       statusCode: statusCode.CREATED,
@@ -21,21 +25,26 @@ const createDivision = CatchAsync(
 // READ ALL DIVISION
 const getDivision = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const division = await divisonServices.getDivision();
+    const division = await divisionServices.getDivision();
     SendResponse(res, {
       success: true,
       statusCode: statusCode.OK,
-      message: 'Division Retrive Successful',
+      message: 'Division Retrieve Successful',
       data: division,
     });
   }
 );
 
-// UPDATED DIVSION
+// UPDATED DIVISION
 const updateDivision = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const divisionId = req.params.id;
-    const division = await divisonServices.updateDivision(divisionId, req.body);
+    // console.log(req.body)
+    const payload = {
+      ...req.body,
+      thumbnail: req.file?.path,
+    };
+    const division = await divisionServices.updateDivision(divisionId, payload);
     SendResponse(res, {
       success: true,
       statusCode: statusCode.OK,
@@ -49,7 +58,7 @@ const updateDivision = CatchAsync(
 const deleteDivision = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const divisionId = req.params.id;
-    const division = await divisonServices.deleteDivision(divisionId);
+    const division = await divisionServices.deleteDivision(divisionId);
     SendResponse(res, {
       success: true,
       statusCode: statusCode.OK,

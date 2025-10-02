@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from 'express';
-import { CatchAsync } from '../utils/CatchAsync';
-import { SendResponse } from '../utils/SendResponse';
+import { CatchAsync } from '../../utils/CatchAsync';
+import { SendResponse } from '../../utils/SendResponse';
 import httpStatus from 'http-status-codes';
 import { authService } from './auth.services';
-import AppError from '../errorHelpers/AppError';
-import { SetCookies } from '../utils/setCookie';
+import AppError from '../../errorHelpers/AppError';
+import { SetCookies } from '../../utils/setCookie';
 import { JwtPayload } from 'jsonwebtoken';
-import { createUserTokens } from '../utils/user.tokens';
-import env from '../config/env';
+import { createUserTokens } from '../../utils/user.tokens';
+import env from '../../config/env';
 import passport from 'passport';
 
 const credentialsLogin = CatchAsync(

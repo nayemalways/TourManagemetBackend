@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { authControllers } from './auth.controller';
-import { checkAuth } from '../middlewares/auth.middleware';
-import { Role } from '../modules/user/user.interface';
+import { checkAuth } from '../../middlewares/auth.middleware';
+import { Role } from '../user/user.interface';
 import passport from 'passport';
 
 const router = express.Router();

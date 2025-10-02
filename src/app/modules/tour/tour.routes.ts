@@ -44,13 +44,14 @@ router.post(
   tourControllers.createTour
 );
 
-router.get(
-  '/',
-  validateRequest(UpdateTourZodScehma),
-  tourControllers.retriveAllTours
-);
+router.get('/', tourControllers.retriveAllTours);
 
-router.patch('/:id', multerUpload.array('files'), tourControllers.updateTours);
+router.patch(
+  '/:id',
+  multerUpload.array('files'),
+  validateRequest(UpdateTourZodScehma),
+  tourControllers.updateTours
+);
 
 router.delete(
   '/:id',

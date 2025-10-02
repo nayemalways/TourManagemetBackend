@@ -28,7 +28,7 @@ const getTourType = CatchAsync(
     SendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Tour type retrived successful!',
+      message: 'Tour type retried successful!',
       data: tourTypes,
     });
   }
@@ -104,7 +104,7 @@ const retriveAllTours = CatchAsync(
     SendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Tour Retrive successful!',
+      message: 'Tour Retrieve successful!',
       data: tour?.data,
       meta: {
         ...tour?.meta,
