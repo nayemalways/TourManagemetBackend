@@ -8,7 +8,6 @@ import env from "../../config/env";
 const successPayment = CatchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const query = req.query;
     const result = await paymentServices.paymentSuccessService(query as Record<string, string>);
-    
     if (result.success) {
         res.redirect(`${env.CLIENT_SUCCESS_URL}/transaction_id=${query.transaction_id}&amount=${query.amount}&status=${query.status}`);
     }

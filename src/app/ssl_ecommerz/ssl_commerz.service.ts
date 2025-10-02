@@ -12,9 +12,9 @@ export const SSL_Payment = async (payload: ISSL_commerz) => {
         total_amount: payload.amount,
         currency: "BDT",
         tran_id: payload.transactionId, // Unique
-        success_url: `${env.BACKEND_SUCCESS_URL}/?transection_id=${payload.transactionId}&amount=${payload.amount}&status=success`,
-        fail_url: `${env.BACKEND_FAIL_URL}/?transection_id=${payload.transactionId}&amount=${payload.amount}&status=fail`,
-        cancel_url: `${env.BACKEND_CANCEL_URL}/?transection_id=${payload.transactionId}&amount=${payload.amount}&status=cancel`,
+        success_url: `${env.BACKEND_SUCCESS_URL}?transection_id=${payload.transactionId}&amount=${payload.amount}&status=success`,
+        fail_url: `${env.BACKEND_FAIL_URL}?transection_id=${payload.transactionId}&amount=${payload.amount}&status=fail`,
+        cancel_url: `${env.BACKEND_CANCEL_URL}?transection_id=${payload.transactionId}&amount=${payload.amount}&status=cancel`,
         ipn_url: `http://localhost:5002/api/v1/ipn`,
         shipping_method: 'Courier',
         product_name: 'Computer',

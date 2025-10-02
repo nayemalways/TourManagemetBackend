@@ -30,7 +30,7 @@ const moduleRoutes = [
     route: bookingRouter
   },
   {
-    path: '/',
+    path: '/payment',
     route: paymentRouter
   }
 ];
