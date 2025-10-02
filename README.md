@@ -1,6 +1,6 @@
 # Tourista🍹⛱️
 
-## A Tour Management Application
+### A Tour Management Application
 
 **_status: Still in progress..._**
 
