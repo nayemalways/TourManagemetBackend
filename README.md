@@ -1,4 +1,4 @@
-# TravelSphere🍹⛱️
+# Tourista🍹⛱️
 
 ## A Tour Management Application
 
