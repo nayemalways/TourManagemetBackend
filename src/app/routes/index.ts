@@ -27,12 +27,12 @@ const moduleRoutes = [
   },
   {
     path: '/booking',
-    route: bookingRouter
+    route: bookingRouter,
   },
   {
     path: '/payment',
-    route: paymentRouter
-  }
+    route: paymentRouter,
+  },
 ];
 
 moduleRoutes.forEach((r) => {

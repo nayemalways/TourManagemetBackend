@@ -11,7 +11,6 @@ export class QueryBuilder<T> {
     this.query = query;
   }
 
- 
   // Case Sensitive filtering
   filter(): this {
     const filter = { ...this.query };
@@ -31,7 +30,6 @@ export class QueryBuilder<T> {
         [field]: { $regex: searchTerm, $options: 'i' },
       })),
     };
-
 
     this.queryModel = this.queryModel.find(searchQuery);
     return this;
@@ -62,9 +60,9 @@ export class QueryBuilder<T> {
   }
 
   join(refs: string[]): this {
-    refs.forEach(ref => {
-      return  this.queryModel = this.queryModel.populate({ path: ref });
-    })
+    refs.forEach((ref) => {
+      return (this.queryModel = this.queryModel.populate({ path: ref }));
+    });
     // this.queryModel = this.queryModel.populate({ path: 'division' });
     // this.queryModel = this.queryModel.populate({ path: 'tourType' });
     return this;

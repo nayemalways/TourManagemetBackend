@@ -59,14 +59,13 @@ const retriveAllTours = async (query: Record<string, string>) => {
     .select()
     .sort()
     .paginate()
-    .join(["tourType", "division"])
+    .join(['tourType', 'division'])
     .build();
 
   const meta = await queryBuilder.getMeta();
 
   return { data: tour, meta };
 };
-
 
 //GET ALL TOUR
 /*
@@ -123,7 +122,6 @@ const retriveAllTour = async (query: Record<string, string>) => {
 } 
 
 */
-
 
 // UPDATE TOUR
 const updateTours = async (tourId: string, payload: Partial<ITour>) => {
@@ -182,14 +180,14 @@ const updateTours = async (tourId: string, payload: Partial<ITour>) => {
 
 // DELETE A TOUR
 const deleteTours = async (tourId: string) => {
-  const isTour = await Tour.findOne({ _id: tourId }) as ITour;
+  const isTour = (await Tour.findOne({ _id: tourId })) as ITour;
   if (!isTour) {
     throw new AppError(StatusCodes.BAD_REQUEST, "Tour doesn't exist!");
   }
 
-   await Promise.all(
-      (isTour?.images as string[]).map((url) => deleteImageFromCLoudinary(url))
-    );
+  await Promise.all(
+    (isTour?.images as string[]).map((url) => deleteImageFromCLoudinary(url))
+  );
 
   return await Tour.findOneAndDelete({ _id: tourId });
 };

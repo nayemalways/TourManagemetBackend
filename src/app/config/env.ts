@@ -62,7 +62,7 @@ const loadEnvVarbles = (): EnvInterfaces => {
     'CLIENT_CANCEL_URL',
     'BACKEND_SUCCESS_URL',
     'BACKEND_FAIL_URL',
-    'BACKEND_CANCEL_URL'
+    'BACKEND_CANCEL_URL',
   ];
 
   requireEnvVariables.forEach((KEY) => {
