@@ -1,6 +1,7 @@
 import AppError from "../../errorHelpers/AppError";
 import { SSL_Payment } from "../../ssl_ecommerz/ssl_commerz.service";
 import { generateTransectionId } from "../../utils/getTransectionid";
+import { QueryBuilder } from "../../utils/QueryBuilder";
 import { PAYEMNT_STATUS } from "../payemnt/payment.interface";
 import { Payment } from "../payemnt/payment.model";
 import { Tour } from "../tour/tour.model";
@@ -81,6 +82,31 @@ const createBooking = async (payload: Partial<IBooking>, userId: string) => {
        }
 }
 
+const getAllBooking = async (query: Record<string, string>) => {
+    const queryBuilder = new QueryBuilder(Booking.find(), query);
+    
+    const searchableFields = [ "status","payment.transectionId",  "payment.status" ];
+
+    const booking = await queryBuilder
+                    .filter()
+                    .search(searchableFields)
+                    .select()
+                    .sort()
+                    .paginate()
+                    .join(["payment"])
+                    .build();
+
+   
+    
+    const meta = await queryBuilder.getMeta();
+
+    return  {
+        booking,
+        meta
+    };
+}
+
 export const bookingService = {
-    createBooking
+    createBooking,
+    getAllBooking
 }

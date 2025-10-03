@@ -58,8 +58,8 @@ const retriveAllTours = async (query: Record<string, string>) => {
     .search(searchField)
     .select()
     .sort()
-    .pagiate()
-    .join()
+    .paginate()
+    .join(["tourType", "division"])
     .build();
 
   const meta = await queryBuilder.getMeta();
@@ -67,16 +67,17 @@ const retriveAllTours = async (query: Record<string, string>) => {
   return { data: tour, meta };
 };
 
-/*
+
 //GET ALL TOUR
-const retriveAllTours = async (query: Record<string, string>) => {
+/*
+const retriveAllTour = async (query: Record<string, string>) => {
     const filter = {...query};
     const searchTerm = query.searchTerm || ""; // Ensure not undefined by blank string
     const sort = query.sort || "-createdAt";
     const page = Number(query.page) || 1;
     const limit = Number(query.limit) || 10;
     const skip =  (page - 1) * limit;
- 
+
 
     // Field filtering
     const fields = query.fields ? query?.fields.split(",").join(" ") : "";
@@ -85,7 +86,7 @@ const retriveAllTours = async (query: Record<string, string>) => {
     // Remove excluded fields
     for (const field of excludeField) {
          // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-         delete filter[field];
+        delete filter[field];
     }
 
     // Search Query
@@ -122,6 +123,7 @@ const retriveAllTours = async (query: Record<string, string>) => {
 } 
 
 */
+
 
 // UPDATE TOUR
 const updateTours = async (tourId: string, payload: Partial<ITour>) => {
