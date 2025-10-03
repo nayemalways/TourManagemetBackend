@@ -11,6 +11,7 @@ export class QueryBuilder<T> {
     this.query = query;
   }
 
+ 
   // Case Sensitive filtering
   filter(): this {
     const filter = { ...this.query };
@@ -31,26 +32,27 @@ export class QueryBuilder<T> {
       })),
     };
 
+
     this.queryModel = this.queryModel.find(searchQuery);
     return this;
   }
 
   // Sorting
   sort(): this {
-    const sort = this.query.sort || '-createdAt';
+    const sort = this.query.sort || '-createdAt'; // ex: title, or -title
     this.queryModel = this.queryModel.sort(sort);
     return this;
   }
 
   // Field filtering
   select(): this {
-    const fields = this.query.fields?.split(',').join(' ') || '';
+    const fields = this.query.fields?.split(',').join(' ') || ''; // ex: "title description price"
     this.queryModel = this.queryModel.select(fields);
     return this;
   }
 
   // Pagination
-  pagiate(): this {
+  paginate(): this {
     const page = Number(this.query.page) || 1;
     const limit = Number(this.query.limit) || 10;
     const skip = (page - 1) * limit;
@@ -59,9 +61,12 @@ export class QueryBuilder<T> {
     return this;
   }
 
-  join(): this {
-    this.queryModel = this.queryModel.populate({ path: 'division' });
-    this.queryModel = this.queryModel.populate({ path: 'tourType' });
+  join(refs: string[]): this {
+    refs.forEach(ref => {
+      return  this.queryModel = this.queryModel.populate({ path: ref });
+    })
+    // this.queryModel = this.queryModel.populate({ path: 'division' });
+    // this.queryModel = this.queryModel.populate({ path: 'tourType' });
     return this;
   }
 
