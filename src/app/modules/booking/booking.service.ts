@@ -1,5 +1,5 @@
 import AppError from '../../errorHelpers/AppError';
-import { SSL_Payment } from '../../ssl_ecommerz/ssl_commerz.service';
+import { SSL_Payment } from '../ssl_ecommerz/ssl_commerz.service';
 import { generateTransectionId } from '../../utils/getTransectionid';
 import { QueryBuilder } from '../../utils/QueryBuilder';
 import { PAYEMNT_STATUS } from '../payemnt/payment.interface';
