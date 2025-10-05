@@ -123,7 +123,7 @@ const getAllBooking = async (query: Record<string, string>) => {
   };
 };
 
-// GET BOOKING ID
+// GET BOOKING BY ID
 const getBookingById = async (bookingId: string) => {
   return await Booking.find({ _id: bookingId })
     .populate('tour')
@@ -140,6 +140,7 @@ const getUserBookings = async (
     .populate('payment');
 };
 
+// UPDATE BOOKING STATUS
 const updateBookingStatus = async (
   bookingId: string,
   status: Partial<IBookingStatus>
