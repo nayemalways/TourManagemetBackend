@@ -44,7 +44,7 @@ router.post(
   tourControllers.createTour
 );
 
-router.get('/', tourControllers.retriveAllTours);
+router.get('/', checkAuth(...Object.values(Role)), tourControllers.retriveAllTours);
 
 router.patch(
   '/:id',
