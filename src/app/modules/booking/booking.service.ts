@@ -8,7 +8,7 @@ import { Tour } from '../tour/tour.model';
 import { User } from '../user/user.model';
 import { IBooking, IBookingStatus } from './booking.interface';
 import { Booking } from './booking.model';
-import httpStatus  from 'http-status-codes';
+import httpStatus from 'http-status-codes';
 
 interface PaymentIUser {
   _id: string;
@@ -125,30 +125,39 @@ const getAllBooking = async (query: Record<string, string>) => {
 
 // GET BOOKING ID
 const getBookingById = async (bookingId: string) => {
-    return await Booking.find({_id: bookingId}).populate('tour').populate('payment');
-}
+  return await Booking.find({ _id: bookingId })
+    .populate('tour')
+    .populate('payment');
+};
 
 // GET USER'S BOOKING
-const getUserBookings = async (userId: string, query: Record<string, string>) => {
-  return await Booking.find({user: userId, ...query}).populate('tour').populate('payment');
-}
+const getUserBookings = async (
+  userId: string,
+  query: Record<string, string>
+) => {
+  return await Booking.find({ user: userId, ...query })
+    .populate('tour')
+    .populate('payment');
+};
 
-const updateBookingStatus = async (bookingId: string, status:  Partial<IBookingStatus>) => {
-    const booking = await Booking.findOne({_id: bookingId });
+const updateBookingStatus = async (
+  bookingId: string,
+  status: Partial<IBookingStatus>
+) => {
+  const booking = await Booking.findOne({ _id: bookingId });
 
-    if(!booking) {
-        throw new AppError(httpStatus.BAD_REQUEST, "Booking not found");
-    }
+  if (!booking) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Booking not found');
+  }
 
-    booking.status = status;
-    
-    return booking.save();
-}
+  booking.status = status;
+  return booking.save();
+};
 
 export const bookingService = {
   createBooking,
   getAllBooking,
   getBookingById,
   updateBookingStatus,
-  getUserBookings
+  getUserBookings,
 };

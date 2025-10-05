@@ -16,17 +16,31 @@ router.post(
 );
 
 // GET ALL BOOKING
-router.get('/', checkAuth(Role.ADMIN, Role.SUPER_ADMIN), bookingControllers.getAllBooking);
+router.get(
+  '/',
+  checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
+  bookingControllers.getAllBooking
+);
 
 // GET USER'S BOOKING
-router.get('/my-bookings', checkAuth(...Object.values(Role)), bookingControllers.getUserBookings);
+router.get(
+  '/my-bookings',
+  checkAuth(...Object.values(Role)),
+  bookingControllers.getUserBookings
+);
 
 // GET BOOKING BY BOOKING ID
-router.get('/:bookingId', checkAuth(...Object.values(Role)), bookingControllers.getBookingById);
+router.get(
+  '/:bookingId',
+  checkAuth(...Object.values(Role)),
+  bookingControllers.getBookingById
+);
 
 // UPDATE BOOKING STATUS
-router.post('/:bookingId', checkAuth(Role.ADMIN, Role.SUPER_ADMIN), bookingControllers.updateBookingStatus);
-
-
+router.patch(
+  '/:bookingId',
+  checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
+  bookingControllers.updateBookingStatus
+);
 
 export const bookingRouter = router;

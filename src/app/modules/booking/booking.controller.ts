@@ -5,7 +5,7 @@ import { JwtPayload } from 'jsonwebtoken';
 import { bookingService } from './booking.service';
 import { SendResponse } from '../../utils/SendResponse';
 import { IBookingStatus } from './booking.interface';
-import  httpStatus  from 'http-status-codes';
+import httpStatus from 'http-status-codes';
 
 const createBooking = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -42,13 +42,16 @@ const getUserBookings = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const query = req.query as Record<string, string>;
     const decodedToken = req.user as JwtPayload;
-    const result = await bookingService.getUserBookings(decodedToken.userId, query);
+    const result = await bookingService.getUserBookings(
+      decodedToken.userId,
+      query
+    );
 
     SendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: 'Booking Retrive Successfully!',
-      data: result 
+      data: result,
     });
   }
 );
@@ -61,7 +64,7 @@ const getBookingById = CatchAsync(
       statusCode: httpStatus.OK,
       success: true,
       message: 'Booking Retrive Successfully!',
-      data: result
+      data: result,
     });
   }
 );
@@ -75,17 +78,15 @@ const updateBookingStatus = CatchAsync(
       statusCode: httpStatus.OK,
       success: true,
       message: 'Booking Retrive Successfully!',
-      data: result
+      data: result,
     });
   }
 );
-
-
 
 export const bookingControllers = {
   createBooking,
   getAllBooking,
   getBookingById,
   getUserBookings,
-  updateBookingStatus
+  updateBookingStatus,
 };
