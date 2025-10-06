@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 import axios from 'axios';
-import env from '../config/env';
+import env from '../../config/env';
 import { ISSL_commerz } from './ssl_commerz.interface';
-import AppError from '../errorHelpers/AppError';
+import AppError from '../../errorHelpers/AppError';
 
 export const SSL_Payment = async (payload: ISSL_commerz) => {
   const data = {

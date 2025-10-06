@@ -1,5 +1,5 @@
 import AppError from '../../errorHelpers/AppError';
-import { SSL_Payment } from '../../ssl_ecommerz/ssl_commerz.service';
+import { SSL_Payment } from '../ssl_ecommerz/ssl_commerz.service';
 import { generateTransectionId } from '../../utils/getTransectionid';
 import { QueryBuilder } from '../../utils/QueryBuilder';
 import { PAYEMNT_STATUS } from '../payemnt/payment.interface';
@@ -123,7 +123,7 @@ const getAllBooking = async (query: Record<string, string>) => {
   };
 };
 
-// GET BOOKING ID
+// GET BOOKING BY ID
 const getBookingById = async (bookingId: string) => {
   return await Booking.find({ _id: bookingId })
     .populate('tour')
@@ -140,6 +140,7 @@ const getUserBookings = async (
     .populate('payment');
 };
 
+// UPDATE BOOKING STATUS
 const updateBookingStatus = async (
   bookingId: string,
   status: Partial<IBookingStatus>
