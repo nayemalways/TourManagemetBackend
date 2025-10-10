@@ -14,7 +14,18 @@ export const sendMail = async (req: Request, res: Response, next: NextFunction) 
         data: null
     })
 }
+export const verifyOTP = async (req: Request, res: Response, next: NextFunction) => {
+    const {otp, email} = req.body;
+    await userOTPservice.verifyOTP(email, otp);
+    SendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "OTP verified successfully",
+        data: null
+    })
+}
 
 export const userOTPControllers = {
-    sendMail
+    sendMail,
+    verifyOTP
 }
