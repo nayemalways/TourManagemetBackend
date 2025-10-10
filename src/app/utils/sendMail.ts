@@ -39,7 +39,7 @@ interface SendEmailOptions {
     try {
         const templatePath = path.join(__dirname, `templates/${templateName}.ejs`);
         const html = await ejs.renderFile(templatePath, templateData);
-        const info = await transporter.sendMail({
+        await transporter.sendMail({
             from: env.EMAIL_USER,
             to: to,
             subject: subject,
