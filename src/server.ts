@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import app from './app';
 import envVars from './app/config/env';
 import { superAdminCreate } from './app/utils/seedSuperAdmin';
+import { connectRedis } from './app/config/redis.config';
 dotenv.config();
 
 const PORT = envVars.PORT || 3002;
@@ -27,6 +28,7 @@ const startServer = async () => {
 // Booom and start the server
 
 (async () => {
+  await connectRedis();
   await startServer();
   await superAdminCreate(); // Created Default super admin
 })();

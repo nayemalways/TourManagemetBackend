@@ -31,6 +31,16 @@ interface EnvInterfaces {
   BACKEND_SUCCESS_URL: string;
   BACKEND_FAIL_URL: string;
   BACKEND_CANCEL_URL: string;
+
+  REDIS_HOST: string;
+  REDIS_PORT: string;
+  REDIS_USERNAME: string;
+  REDIS_PASSWORD: string;
+
+  EMAIL_HOST: string;
+  EMAIL_PORT: string;
+  EMAIL_USER: string;
+  EMAIL_PASSWORD: string;
 }
 
 const loadEnvVarbles = (): EnvInterfaces => {
@@ -63,6 +73,14 @@ const loadEnvVarbles = (): EnvInterfaces => {
     'BACKEND_SUCCESS_URL',
     'BACKEND_FAIL_URL',
     'BACKEND_CANCEL_URL',
+    'REDIS_HOST',
+    'REDIS_PORT',
+    'REDIS_USERNAME',
+    'REDIS_PASSWORD',
+    'EMAIL_HOST',
+    'EMAIL_PORT',
+    'EMAIL_USER',
+    'EMAIL_PASSWORD',
   ];
 
   requireEnvVariables.forEach((KEY) => {
@@ -76,20 +94,26 @@ const loadEnvVarbles = (): EnvInterfaces => {
     PORT: process.env.PORT as string,
     NODE_ENV: process.env.NODE_ENV as 'development' | 'production',
     BCRYPT_SALT_ROUND: process.env.BCRYPT_SALT_ROUND as string,
+
     JWT_SECRET: process.env.JWT_SECRET as string,
     JWT_EXPIRATION: process.env.JWT_EXPIRATION as string,
     JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET as string,
     JWT_REFRESH_EXPIRATION: process.env.JWT_REFRESH_EXPIRATION as string,
+
     SUPER_ADMIN_GMAIL: process.env.SUPER_ADMIN_GMAIL as string,
     SUPER_ADMIN_PASSWORD: process.env.SUPER_ADMIN_PASSWORD as string,
-    EXPRESS_SESSION_SECRET: process.env.EXPRESS_SESSION_SECRET as string,
+
     FRONTEND_URL: process.env.FRONTEND_URL as string,
+    
+    EXPRESS_SESSION_SECRET: process.env.EXPRESS_SESSION_SECRET as string,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET as string,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID as string,
     GOOGLE_CALLBACK_URL: process.env.GOOGLE_CALLBACK_URL as string,
+
     CLOUDINARY_SECRET: process.env.CLOUDINARY_SECRET as string,
     CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY as string,
     CLOUDINARY_NAME: process.env.CLOUDINARY_NAME as string,
+
     STORE_ID: process.env.STORE_ID as string,
     STORE_PASSWORD: process.env.STORE_PASSWORD as string,
     SSL_PAYMENT_API: process.env.SSL_PAYMENT_API as string,
@@ -99,6 +123,16 @@ const loadEnvVarbles = (): EnvInterfaces => {
     BACKEND_SUCCESS_URL: process.env.BACKEND_SUCCESS_URL as string,
     BACKEND_FAIL_URL: process.env.BACKEND_FAIL_URL as string,
     BACKEND_CANCEL_URL: process.env.BACKEND_CANCEL_URL as string,
+
+    REDIS_HOST: process.env.REDIS_HOST as string,
+    REDIS_PORT: process.env.REDIS_PORT as string,
+    REDIS_USERNAME: process.env.REDIS_USERNAME as string,
+    REDIS_PASSWORD: process.env.REDIS_PASSWORD as string,
+
+    EMAIL_PASSWORD: process.env.EMAIL_PASSWORD as string,
+    EMAIL_USER: process.env.EMAIL_USER as string,
+    EMAIL_PORT: process.env.EMAIL_PORT as string,
+    EMAIL_HOST: process.env.EMAIL_HOST as string,
   };
 };
 
