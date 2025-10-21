@@ -10,10 +10,11 @@ router.post('/login', authControllers.credentialsLogin);
 router.post('/refresh-token', authControllers.getNewAccessToken);
 router.post('/logout', authControllers.logout);
 router.post(
-  '/reset-password',
+  '/change-password',
   checkAuth(...Object.values(Role)),
-  authControllers.resetPassword
+  authControllers.changePassword
 );
+
 router.get('/google', (req: Request, res: Response, next: NextFunction) => {
   const redirect = req.query?.redirect || '/';
   passport.authenticate('google', {

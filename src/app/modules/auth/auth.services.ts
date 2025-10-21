@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import bcrypt from 'bcrypt';
 import AppError from '../../errorHelpers/AppError';
@@ -45,7 +46,7 @@ const getNewAccessToken = async (refreshToken: string) => {
   return { accessToken: newAccessToken };
 };
 
-const resetPassword = async (
+const changePassword = async (
   decodedToken: JwtPayload,
   oldPassword: string,
   newPassword: string
@@ -58,7 +59,7 @@ const resetPassword = async (
   );
   if (!isPasswordMatched)
     throw new AppError(
-      httpStatus.BAD_REQUEST,
+      httpStatus.UNAUTHORIZED,
       "Password doesn't matched. Enter valid password"
     );
 
@@ -68,7 +69,24 @@ const resetPassword = async (
   return null;
 };
 
+const resetPassword = async (payload: Record<string, any>, decodedToken: JwtPayload) => {
+  if(payload.id != decodedToken.userId) {
+    throw new AppError(httpStatus.UNAUTHORIZED, "You can not reset your password");
+  }
+
+  const isUserExist = await User.findById(decodedToken.userId);
+  if (!isUserExist) {
+    throw new AppError(httpStatus.BAD_REQUEST, "User does not exist");
+  }
+
+  isUserExist!.password = payload.newPassword; // No need to hash password, because in user model we hashed password with pre hook middleware
+  await isUserExist!.save(); // Save document
+
+  return null;
+}
+
 export const authService = {
   getNewAccessToken,
-  resetPassword,
+  changePassword,
+  resetPassword
 };
