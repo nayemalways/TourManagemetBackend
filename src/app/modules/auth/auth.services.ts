@@ -3,13 +3,10 @@ import bcrypt from 'bcrypt';
 import AppError from '../../errorHelpers/AppError';
 import httpStatus from 'http-status-codes';
 import { User } from '../user/user.model';
-import { IUser } from '../user/user.interface';
-import {
-  createNewAccessTokenWithRefreshToken,
-  createUserTokens,
-} from '../../utils/user.tokens';
+import { createNewAccessTokenWithRefreshToken } from '../../utils/user.tokens';
 import { JwtPayload } from 'jsonwebtoken';
 
+/*
 const credentialsLogin = async (paylod: Partial<IUser>) => {
   const { email, password } = paylod;
 
@@ -40,6 +37,7 @@ const credentialsLogin = async (paylod: Partial<IUser>) => {
     user,
   };
 };
+*/
 
 const getNewAccessToken = async (refreshToken: string) => {
   const newAccessToken =
@@ -71,7 +69,6 @@ const resetPassword = async (
 };
 
 export const authService = {
-  credentialsLogin,
   getNewAccessToken,
   resetPassword,
 };
