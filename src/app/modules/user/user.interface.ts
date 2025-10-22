@@ -30,7 +30,7 @@ export interface IUser {
   isActive?: IsActive;
   isVerified?: boolean;
   role: Role;
-  auths?: IAuthProvider[]; // USER CAN ADD ALSO THERIR PASSWORD EVEN CREATE WITH GOOGLE
+  auths?: IAuthProvider[]; // USER CAN ADD ALSO THEIR PASSWORD EVEN CREATE WITH GOOGLE
   bookings?: Types.ObjectId[];
   guides?: Types.ObjectId[];
 }

@@ -37,7 +37,7 @@ const moduleRoutes = [
   {
     path: '/otp',
     route: otpRoutes,
-  }
+  },
 ];
 
 moduleRoutes.forEach((r) => {
