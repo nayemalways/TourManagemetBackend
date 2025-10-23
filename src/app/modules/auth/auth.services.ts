@@ -6,6 +6,11 @@ import httpStatus from 'http-status-codes';
 import { User } from '../user/user.model';
 import { createNewAccessTokenWithRefreshToken } from '../../utils/user.tokens';
 import { JwtPayload } from 'jsonwebtoken';
+import { IsActive } from '../user/user.interface';
+import jwt from 'jsonwebtoken';
+import env from '../../config/env';
+import { sendEmail } from '../../utils/sendMail';
+
 
 /*
 const credentialsLogin = async (paylod: Partial<IUser>) => {
@@ -92,8 +97,47 @@ const resetPassword = async (
   return null;
 };
 
+const forgetPassword = async (email: string) => {
+  const isUserExist = await User.findOne({email});
+
+  if (!isUserExist) {
+    throw new AppError(httpStatus.BAD_REQUEST, "User does not exist");
+  }
+  if (!isUserExist.isVerified)  {
+    throw new AppError(httpStatus.BAD_REQUEST, "User not verified");
+  }
+  if (isUserExist.isActive === IsActive.BLOCKED || isUserExist.isActive === IsActive.INACTIVE) {
+    throw new AppError(httpStatus.BAD_REQUEST, `User is ${isUserExist.isActive}`);
+  }
+  if (isUserExist.isDeleted) {
+    throw new AppError(httpStatus.BAD_REQUEST, "user is deleted");
+  }
+
+  const jwtPayload = {
+    userId: isUserExist._id,
+    email: isUserExist.email,
+    role: isUserExist.role
+  };
+
+  const resetToken = jwt.sign(jwtPayload, env.JWT_SECRET, { expiresIn: '10m'});
+
+  const resetUILink = `${env.FRONTEND_URL}/reset-password?id=${isUserExist._id}&token=${resetToken}`;
+
+  sendEmail({
+    to: isUserExist.email,
+    subject: "Password Reset",
+    templateName: "forgetPassword",
+    templateData: {
+      name: isUserExist.name,
+      resetUILink
+    }
+  })
+  return email;
+}
+
 export const authService = {
   getNewAccessToken,
   changePassword,
   resetPassword,
+  forgetPassword
 };

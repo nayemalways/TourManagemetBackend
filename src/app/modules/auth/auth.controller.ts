@@ -111,6 +111,18 @@ const resetPassword = CatchAsync(
   }
 );
 
+const forgetPassword = CatchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const { email } = req.body;
+  await authService.forgetPassword(email);
+
+  SendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Email sent successfully",
+    data: null
+  })
+})
+
 const googleCallback = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     let redirectTo = req.query.state ? (req.query.state as string) : '';
@@ -135,4 +147,5 @@ export const authControllers = {
   changePassword,
   googleCallback,
   resetPassword,
+  forgetPassword
 };

@@ -17,6 +17,11 @@ router.post(
   authControllers.changePassword
 );
 
+router.post("/reset-password", checkAuth(...Object.values(Role)), authControllers.resetPassword);
+router.post('/forget-password', authControllers.forgetPassword);
+
+
+
 // This is my previous code: It returns a HTML Response thats why commented and newer version code is below. 
 // That returns a JSON response with Google consent_screen link
 
