@@ -3,13 +3,13 @@ import { NextFunction, Request, Response } from 'express';
 import { userOTPservice } from './otp.service';
 import { SendResponse } from '../../utils/SendResponse';
 
-export const sendMail = async (
+const sendOTP = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { name, email } = req.body;
-  await userOTPservice.sendOTP(email, name);
+  const { email } = req.body;
+  await userOTPservice.sendOTP(email);
   SendResponse(res, {
     statusCode: 200,
     success: true,
@@ -17,7 +17,7 @@ export const sendMail = async (
     data: null,
   });
 };
-export const verifyOTP = async (
+const verifyOTP = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -27,12 +27,12 @@ export const verifyOTP = async (
   SendResponse(res, {
     statusCode: 200,
     success: true,
-    message: 'OTP verified successfully',
+    message: 'User verified successfully',
     data: null,
   });
 };
 
 export const userOTPControllers = {
-  sendMail,
+  sendOTP,
   verifyOTP,
 };
