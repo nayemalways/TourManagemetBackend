@@ -17,7 +17,8 @@ router.post(
   authControllers.changePassword
 );
 
-// This is my previous code: It returns a HTML Response thats why commented and newer version code is below. That returns a JSON response with Google consent_screen link
+// This is my previous code: It returns a HTML Response thats why commented and newer version code is below. 
+// That returns a JSON response with Google consent_screen link
 
 /*
 router.get('/google', (req: Request, res: Response, next: NextFunction) => {
