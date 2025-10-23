@@ -6,10 +6,11 @@ import httpStatus from 'http-status-codes';
 import { User } from '../user/user.model';
 import { createNewAccessTokenWithRefreshToken } from '../../utils/user.tokens';
 import { JwtPayload } from 'jsonwebtoken';
-import { IsActive } from '../user/user.interface';
+import { IAuthProvider, IsActive } from '../user/user.interface';
 import jwt from 'jsonwebtoken';
 import env from '../../config/env';
 import { sendEmail } from '../../utils/sendMail';
+
 
 
 /*
@@ -74,6 +75,32 @@ const changePassword = async (
   return null;
 };
 
+const setPassword = async (decodedToken: JwtPayload, password: string) => {
+  const isUserExist = await User.findOne({_id: decodedToken.userId});
+
+  if (!isUserExist) {
+    throw new AppError(httpStatus.BAD_REQUEST, "User not exist");
+  }
+
+  if (isUserExist.password && isUserExist.auths?.some((providerObject) => providerObject.provider === "google")) {
+    throw new AppError(httpStatus.BAD_REQUEST, "You have already set a password. You cannot set password again");
+  }
+
+  const credentialProvider: IAuthProvider = {
+    provider: "credentials",
+    providerId: isUserExist.email
+  }
+
+  const auths: IAuthProvider[] = [...isUserExist.auths as IAuthProvider[], credentialProvider];
+
+  isUserExist.password = password;
+  isUserExist.auths = auths;
+
+  await isUserExist.save();
+
+  return true;
+}
+
 const resetPassword = async (
   payload: Record<string, any>,
   decodedToken: JwtPayload
@@ -122,6 +149,9 @@ const forgetPassword = async (email: string) => {
   const resetToken = jwt.sign(jwtPayload, env.JWT_SECRET, { expiresIn: '10m'});
 
   const resetUILink = `${env.FRONTEND_URL}/reset-password?id=${isUserExist._id}&token=${resetToken}`;
+  /**
+     http://localhost:5173/reset-password?id=687f310c724151eb2fcf0c41&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODdmMzEwYzcyNDE1MWViMmZjZjBjNDEiLCJlbWFpbCI6InNhbWluaXNyYXI2QGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzUzMTY2MTM3LCJleHAiOjE3NTMxNjY3Mzd9.LQgXBmyBpEPpAQyPjDNPL4m2xLF4XomfUPfoxeG0MKg
+  */
 
   sendEmail({
     to: isUserExist.email,
@@ -132,12 +162,13 @@ const forgetPassword = async (email: string) => {
       resetUILink
     }
   })
-  return email;
+  return null;
 }
 
 export const authService = {
   getNewAccessToken,
   changePassword,
   resetPassword,
-  forgetPassword
+  forgetPassword,
+  setPassword
 };

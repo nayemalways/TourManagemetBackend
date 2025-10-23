@@ -11,6 +11,7 @@ import { JwtPayload } from 'jsonwebtoken';
 import { createUserTokens } from '../../utils/user.tokens';
 import env from '../../config/env';
 import passport from 'passport';
+import { OAuth2Client } from 'google-auth-library';
 
 const credentialsLogin = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -97,6 +98,22 @@ const changePassword = CatchAsync(
   }
 );
 
+const setPassword = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const decodedToken = req.user as JwtPayload;
+    const { password } = req.body;
+    await authService.setPassword(decodedToken, password);
+
+    SendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: `Password set Successfully`,
+      data: null,
+    });
+  }
+);
+
+
 const resetPassword = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const decodedToken = req.user;
@@ -123,6 +140,45 @@ const forgetPassword = CatchAsync(async (req: Request, res: Response, next: Next
   })
 })
 
+
+// -----------------------GOOGLE---------------------------------------
+
+
+// This is my previous code: It returns a HTML Response thats why commented and newer version code is below. 
+// That returns a JSON response with Google consent_screen link
+/*
+const googleRegister = CatchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const redirect = req.query?.redirect || '/';
+
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    state: redirect as string,
+    prompt: 'consent select_account',
+  })(req, res, next);
+
+})
+
+*/
+
+const googleRegister = CatchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const redirect = req.query.redirect || '/';
+    const oauth2Client = new OAuth2Client(
+      env.GOOGLE_CLIENT_ID,
+      env.GOOGLE_CLIENT_SECRET,
+      env.GOOGLE_CALLBACK_URL
+    );
+
+    const url = oauth2Client.generateAuthUrl({
+      access_type: 'offline',
+      scope: ['profile', 'email'],
+      prompt: 'consent',
+      state: redirect as string,
+    });
+
+    // Return URL as JSON instead of redirect
+    res.json({ url });
+})
+
 const googleCallback = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     let redirectTo = req.query.state ? (req.query.state as string) : '';
@@ -145,7 +201,9 @@ export const authControllers = {
   getNewAccessToken,
   logout,
   changePassword,
+  googleRegister,
   googleCallback,
   resetPassword,
-  forgetPassword
+  forgetPassword,
+  setPassword
 };
