@@ -5,6 +5,9 @@ import { paymentServices } from './payment.service';
 import env from '../../config/env';
 import { SendResponse } from '../../utils/SendResponse';
 import httpStatus  from 'http-status-codes';
+import { Payment } from './payment.model';
+import axios from 'axios';
+
 
 // Manual Payment Init
 const initPayment = CatchAsync(async (req: Request, res: Response) => {
@@ -59,9 +62,22 @@ const cancelPayment = CatchAsync(
   }
 );
 
+const downloadInvoice = async (req: Request, res: Response) => {
+  const { paymentId } = req.params;
+  const result = await paymentServices.getInvoiceDownloadURL(paymentId);
+  
+  SendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Invoice url fetched successfully",
+    data: result
+  })
+};
+
 export const paymentController = {
   successPayment,
   failedPayment,
   cancelPayment,
-  initPayment
+  initPayment ,
+  downloadInvoice
 };
