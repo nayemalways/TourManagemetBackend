@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Booking } from "../booking/booking.model"
+import { PAYEMNT_STATUS } from "../payemnt/payment.interface";
+import { Payment } from "../payemnt/payment.model";
 
 
 const now = new Date();
@@ -107,7 +109,76 @@ const bookingStats = async () => {
     };
 }
 
+const getPaymentStats = async () => {
+    const totalPaymentPromise = Payment.countDocuments();
+
+    const totalPaymentByStatusPromise = Payment.aggregate([
+        // stage-1: group
+        {
+            $group: {
+                _id: "$status",
+                count: { $sum: 1}
+            }
+        }
+    ]);
+
+    const totalRevenuePromise = Payment.aggregate([
+        // stage-1 match stage
+        {
+            $match: { status: PAYEMNT_STATUS.PAID }
+        },
+
+        // stage-2: group
+        {
+            $group: {
+                _id: null,
+                totalRevenue: { $sum: "$amount"}
+            }
+        }
+    ]);
+
+
+    const avgPaymentAmountPromise = Payment.aggregate([
+        //stage-1: group stage
+        {
+            $group: {
+                _id: null,
+                avgPaymentAmount: { $avg: "$amount" }
+            }
+        }
+    ]);
+
+    const paymentGetewayDataPromise = Payment.aggregate([
+        // stage-1: group stage
+        {
+            $group: {
+                _id: { $ifNull: ["$paymentGetewayData.status", "UNKNOWN"]},
+                count: { $sum: 1 }
+            }
+        }
+    ])
+
+
+    const [totalPayment, totalPaymentByStatus, totalRevenue, avgPaymentAmount, paymentGetewayData ] = await Promise.all([
+        totalPaymentPromise,
+        totalPaymentByStatusPromise,
+        totalRevenuePromise,
+        avgPaymentAmountPromise,
+        paymentGetewayDataPromise
+    ])
+
+
+    return  {
+        totalPayment,
+        totalPaymentByStatus,
+        totalRevenue: totalRevenue[0].totalRevenue,
+        avgPaymentAmount: avgPaymentAmount[0].avgPaymentAmount,
+        paymentGetewayData
+    };
+}
+
 
 export const statsServices = {
-    bookingStats
+    bookingStats,
+    getPaymentStats
 }

@@ -16,7 +16,18 @@ const bookingStats = CatchAsync(async (req: Request, res: Response, next: NextFu
     })
 })
 
+const paymentStats = CatchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const result = await statsServices.getPaymentStats();
+    SendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Payment stats fetched successfully",
+        data: result
+    })
+})
+
 
 export const statsControllers = {
-    bookingStats
+    bookingStats,
+    paymentStats
 }

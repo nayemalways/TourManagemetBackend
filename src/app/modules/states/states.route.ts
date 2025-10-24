@@ -7,6 +7,7 @@ const router = Router();
 
 
 router.get('/booking', checkAuth(Role.ADMIN, Role.SUPER_ADMIN), statsControllers.bookingStats);
+router.get('/payment', checkAuth(Role.ADMIN, Role.SUPER_ADMIN), statsControllers.paymentStats );
 
 
 export const statsRouter = router;
