@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import AppError from '../../errorHelpers/AppError';
 import { SSL_Payment } from '../ssl_ecommerz/ssl_commerz.service';
 import { generateTransectionId } from '../../utils/getTransectionid';
@@ -74,7 +75,7 @@ const createBooking = async (payload: Partial<IBooking>, userId: string) => {
 
     const userPopulated = updateBooking?.user as unknown as PaymentIUser;
 
-    const paymentGet = await SSL_Payment({
+    const ssl_payment = await SSL_Payment({
       address: userPopulated?.address,
       phone: userPopulated.phone,
       email: userPopulated.email,
@@ -83,11 +84,13 @@ const createBooking = async (payload: Partial<IBooking>, userId: string) => {
       amount: totalAmount,
     });
 
+    const paymentURL = (ssl_payment as any)?.GatewayPageURL;
+
     await session.commitTransaction();
     session.endSession();
 
     return {
-      paymentUrl: paymentGet?.GatewayPageURL,
+      paymentURL,
       booking: updateBooking
     };
   } catch (error) {
