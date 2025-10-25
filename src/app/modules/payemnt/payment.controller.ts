@@ -5,8 +5,6 @@ import { paymentServices } from './payment.service';
 import env from '../../config/env';
 import { SendResponse } from '../../utils/SendResponse';
 import httpStatus  from 'http-status-codes';
-import { Payment } from './payment.model';
-import axios from 'axios';
 
 
 // Manual Payment Init
