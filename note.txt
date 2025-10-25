@@ -1,0 +1,4 @@
+Problem to fix: 
+
+    1. Cloudinary pdf url not showing anything
+    2. Have to remove button from pdf
