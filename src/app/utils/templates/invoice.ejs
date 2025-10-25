@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice from Tourista</title>
+    <style>
+        /* General Reset */
+        body { margin: 0; padding: 0; background-color: #f4f4f4; font-family: Arial, sans-serif; }
+        table { border-collapse: collapse; }
+        td { font-size: 14px; line-height: 20px; }
+
+        /* Mobile Adjustments */
+        @media only screen and (max-width: 600px) {
+            .container { width: 100% !important; }
+            .content-area { padding: 10px !important; }
+            .header-cell, .footer-cell { padding: 15px 10px !important; }
+            .heading { font-size: 24px !important; }
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4f4f4;">
+
+    <!-- 1. Outer Container Table -->
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f4f4f4;">
+        <tr>
+            <td align="center" style="padding: 20px 0;">
+
+                <!-- 2. Main Content Wrapper -->
+                <table class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+
+                    <!-- Header Row (Tourista Branding) -->
+                    <tr>
+                        <td align="center" class="header-cell" style="padding: 30px 20px; background-color: #2196F3; border-radius: 8px 8px 0 0;">
+                            <h1 class="heading" style="color: #ffffff; font-size: 32px; margin: 0; font-weight: 700;">
+                                Tourista
+                            </h1>
+                            <p style="color: #ffffff; font-size: 16px; margin: 5px 0 0 0;">Your Adventure Awaits</p>
+                        </td>
+                    </tr>
+
+                    <!-- Invoice Title & Details -->
+                    <tr>
+                        <td class="content-area" style="padding: 40px 30px 20px 30px;">
+                            <h2 style="font-size: 22px; color: #333333; margin: 0 0 10px 0;">Invoice Details</h2>
+
+                            <!-- Invoice Metadata Table -->
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-bottom: 1px solid #eeeeee; padding-bottom: 15px; margin-bottom: 20px;">
+                                <tr>
+                                    <td width="50%" style="color: #666666; padding-bottom: 5px;">
+                                        <strong>Transaction ID:</strong>
+                                    </td>
+                                    <td width="50%" align="right" style="color: #333333; font-weight: bold; padding-bottom: 5px;">
+                                        <%= transactionId %>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #666666;">
+                                        <strong>Booking Date:</strong>
+                                    </td>
+                                    <td align="right" style="color: #333333; font-weight: bold;">
+                                        <%= bookingDate %>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Customer Information -->
+                            <h3 style="font-size: 18px; color: #333333; margin: 0 0 10px 0;">Billed To:</h3>
+                            <p style="color: #333333; margin: 0 0 20px 0; font-size: 16px; font-weight: bold;">
+                                <%= userName %>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Line Item Table -->
+                    <tr>
+                        <td class="content-area" style="padding: 10px 30px 20px 30px;">
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border: 1px solid #dddddd; border-radius: 4px;">
+                                <!-- Table Header -->
+                                <tr style="background-color: #f9f9f9;">
+                                    <td style="padding: 12px; font-weight: bold; color: #333333; border-bottom: 1px solid #dddddd; width: 60%;">Description</td>
+                                    <td align="center" style="padding: 12px; font-weight: bold; color: #333333; border-bottom: 1px solid #dddddd; width: 20%;">Guests</td>
+                                    <td align="right" style="padding: 12px; font-weight: bold; color: #333333; border-bottom: 1px solid #dddddd; width: 20%;">Amount</td>
+                                </tr>
+
+                                <!-- Line Item -->
+                                <tr>
+                                    <td style="padding: 15px 12px; color: #333333;">
+                                        <strong>Tour:</strong> <%= tourTitle %>
+                                    </td>
+                                    <td align="center" style="padding: 15px 12px; color: #333333;">
+                                        <%= guestCount %>
+                                    </td>
+                                    <td align="right" style="padding: 15px 12px; color: #333333;">
+                                        <%= totalAmount %>TK
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Total Summary -->
+                    <tr>
+                        <td class="content-area" style="padding: 10px 30px 40px 30px;">
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                    <td width="70%" align="right" style="padding-top: 15px; font-size: 16px; color: #666666;">
+                                        Subtotal:
+                                    </td>
+                                    <td width="30%" align="right" style="padding-top: 15px; font-size: 16px; color: #666666;">
+                                        <%= totalAmount %>TK
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="right" style="padding-top: 5px; font-size: 16px; color: #666666;">
+                                        Taxes / Fees:
+                                    </td>
+                                    <td align="right" style="padding-top: 5px; font-size: 16px; color: #666666;">
+                                        0.00TK
+                                    </td>
+                                </tr>
+                                <!-- Final Total -->
+                                <tr style="border-top: 2px solid #2196F3;">
+                                    <td align="right" style="padding-top: 15px; font-size: 20px; font-weight: bold; color: #2196F3;">
+                                        TOTAL AMOUNT PAID:
+                                    </td>
+                                    <td align="right" style="padding-top: 15px; font-size: 20px; font-weight: bold; color: #2196F3;">
+                                        <%= totalAmount %>TK
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <div style="padding: 30px 0; width: 100%; display: flex; justify-content: center; align-items: center;">
+                       <a 
+                            style="background-color: #2196F3; padding: 12px 30px; border-radius: 30px; color: #fff; text-decoration: none; display: inline-block;" 
+                            href="<%= invoiceURL %>" 
+                            download
+                        >
+                            Download
+                        </a>
+
+                    </div>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" class="footer-cell" style="padding: 30px 20px; background-color: #333333; border-radius: 0 0 8px 8px;">
+                            <p style="color: #bbbbbb; font-size: 12px; margin: 0;">
+                                Thank you for booking your adventure with Tourista.
+                            </p>
+                            <p style="color: #bbbbbb; font-size: 12px; margin: 5px 0 0 0;">
+                                Contact us at support@tourista.com or call 1-800-TOUR-ADV
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                <!-- End Main Content Wrapper -->
+
+            </td>
+        </tr>
+    </table>
+    <!-- End Outer Container Table -->
+
+</body>
+</html>
