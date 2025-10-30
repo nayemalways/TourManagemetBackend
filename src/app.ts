@@ -8,6 +8,7 @@ import passport from 'passport';
 import expressSession from 'express-session';
 import './app/config/passport';
 import env from './app/config/env';
+import { swaggerSpec, swaggorUI } from './app/config/swaggor.config';
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
+app.use("/api-docs", swaggorUI.serve, swaggorUI.setup(swaggerSpec))
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Welcome to the show');
