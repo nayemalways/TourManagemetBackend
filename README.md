@@ -4,7 +4,7 @@
 
 **_status: Still in progress..._**
 
-TravelSphere is a comprehensive tour management system designed to simplify the planning, organization, and execution of trips for travel agencies, tour operators, and individual travelers. With TripPlanner, you can effortlessly manage itineraries, bookings, accommodations, transport schedules, and customer information — all from a single, intuitive platform.
+Tourista is a comprehensive tour management system designed to simplify the planning, organization, and execution of trips for travel agencies, tour operators, and individual travelers. With TripPlanner, you can effortlessly manage itineraries, bookings, accommodations, transport schedules, and customer information — all from a single, intuitive platform.
 
 ## Key Features
 
