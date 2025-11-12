@@ -21,8 +21,12 @@ app.use(
 );
 app.use(passport.initialize()); // Initialized passport
 app.use(passport.session()); // Create a session and handled all the thing
+app.set("trust proxy", 1);
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: env.FRONTEND_URL,
+  credentials: true
+}));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api-docs', swaggorUI.serve, swaggorUI.setup(swaggerSpec));
