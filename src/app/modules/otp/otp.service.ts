@@ -4,7 +4,6 @@ import AppError from '../../errorHelpers/AppError';
 import { redisClient } from '../../config/redis.config';
 import { sendEmail } from '../../utils/sendMail';
 
-
 // UTILITY
 const generateOTP = (length = 6) =>
   crypto.randomInt(10 ** (length - 1), 10 ** length).toString();
@@ -12,8 +11,7 @@ const generateOTP = (length = 6) =>
 const Expiration_time = 60 * 2; // 2 min
 // ------------------------------------------------------------------------
 
-
-const sendOTP = async (email: string ) => {
+const sendOTP = async (email: string) => {
   const user = await User.findOne({ email });
 
   if (!user) {

@@ -113,7 +113,6 @@ const setPassword = CatchAsync(
   }
 );
 
-
 const resetPassword = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const decodedToken = req.user;
@@ -128,23 +127,23 @@ const resetPassword = CatchAsync(
   }
 );
 
-const forgetPassword = CatchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const { email } = req.body;
-  await authService.forgetPassword(email);
+const forgetPassword = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { email } = req.body;
+    await authService.forgetPassword(email);
 
-  SendResponse(res, {
-    success: true,
-    statusCode: httpStatus.OK,
-    message: "Email sent successfully",
-    data: null
-  })
-})
-
+    SendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: 'Email sent successfully',
+      data: null,
+    });
+  }
+);
 
 // -----------------------GOOGLE---------------------------------------
 
-
-// This is my previous code: It returns a HTML Response thats why commented and newer version code is below. 
+// This is my previous code: It returns a HTML Response thats why commented and newer version code is below.
 // That returns a JSON response with Google consent_screen link
 /*
 const googleRegister = CatchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -160,7 +159,8 @@ const googleRegister = CatchAsync(async (req: Request, res: Response, next: Next
 
 */
 
-const googleRegister = CatchAsync(async (req: Request, res: Response, next: NextFunction) => {
+const googleRegister = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
     const redirect = req.query.redirect || '/';
     const oauth2Client = new OAuth2Client(
       env.GOOGLE_CLIENT_ID,
@@ -177,7 +177,8 @@ const googleRegister = CatchAsync(async (req: Request, res: Response, next: Next
 
     // Return URL as JSON instead of redirect
     res.json({ url });
-})
+  }
+);
 
 const googleCallback = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -205,5 +206,5 @@ export const authControllers = {
   googleCallback,
   resetPassword,
   forgetPassword,
-  setPassword
+  setPassword,
 };

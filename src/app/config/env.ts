@@ -25,6 +25,7 @@ interface EnvInterfaces {
   STORE_ID: string;
   STORE_PASSWORD: string;
   SSL_PAYMENT_API: string;
+  SSL_VALIDATION_API: string;
   CLIENT_SUCCESS_URL: string;
   CLIENT_FAIL_URL: string;
   CLIENT_CANCEL_URL: string;
@@ -67,6 +68,7 @@ const loadEnvVarbles = (): EnvInterfaces => {
     'STORE_ID',
     'STORE_PASSWORD',
     'SSL_PAYMENT_API',
+    'SSL_VALIDATION_API',
     'CLIENT_SUCCESS_URL',
     'CLIENT_FAIL_URL',
     'CLIENT_CANCEL_URL',
@@ -117,6 +119,7 @@ const loadEnvVarbles = (): EnvInterfaces => {
     STORE_ID: process.env.STORE_ID as string,
     STORE_PASSWORD: process.env.STORE_PASSWORD as string,
     SSL_PAYMENT_API: process.env.SSL_PAYMENT_API as string,
+    SSL_VALIDATION_API: process.env.SSL_VALIDATION_API as string,
     CLIENT_SUCCESS_URL: process.env.CLIENT_SUCCESS_URL as string,
     CLIENT_FAIL_URL: process.env.CLIENT_FAIL_URL as string,
     CLIENT_CANCEL_URL: process.env.CLIENT_CANCEL_URL as string,

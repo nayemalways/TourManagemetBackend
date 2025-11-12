@@ -14,9 +14,6 @@ const router = Router();
  *   description: User management endpoints
  */
 
- 
-
-
 /**
  * @swagger
  * /api/v1/user/register:
@@ -30,7 +27,7 @@ const router = Router();
  *         application/json:
  *           schema:
  *             type: object
- *             required: 
+ *             required:
  *                - name
  *                - email
  *                - password
@@ -50,7 +47,7 @@ const router = Router();
  *               address:
  *                 type: string
  *                 example: "Dhaka, Bangladesh"
- *  
+ *
  *     responses:
  *       201:
  *         description: User created successfully
@@ -60,8 +57,6 @@ router.post(
   validateRequest(UserZodSchema),
   UserControllers.createUser
 );
-
-
 
 /**
  * @swagger
@@ -92,9 +87,6 @@ router.get(
   checkAuth(...Object.values(Role)),
   UserControllers.allUsers
 );
-
-
-
 
 /**
  * @swagger
@@ -132,6 +124,10 @@ router.patch(
 );
 
 router.get('/', checkAuth(...Object.values(Role)), UserControllers.getMe);
-router.get('/:userId', checkAuth(Role.ADMIN, Role.SUPER_ADMIN), UserControllers.getSingleUser );
+router.get(
+  '/:userId',
+  checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
+  UserControllers.getSingleUser
+);
 
 export const UserRoute = router;

@@ -11,8 +11,6 @@ import jwt from 'jsonwebtoken';
 import env from '../../config/env';
 import { sendEmail } from '../../utils/sendMail';
 
-
-
 /*
 const credentialsLogin = async (paylod: Partial<IUser>) => {
   const { email, password } = paylod;
@@ -76,22 +74,33 @@ const changePassword = async (
 };
 
 const setPassword = async (decodedToken: JwtPayload, password: string) => {
-  const isUserExist = await User.findOne({_id: decodedToken.userId});
+  const isUserExist = await User.findOne({ _id: decodedToken.userId });
 
   if (!isUserExist) {
-    throw new AppError(httpStatus.BAD_REQUEST, "User not exist");
+    throw new AppError(httpStatus.BAD_REQUEST, 'User not exist');
   }
 
-  if (isUserExist.password && isUserExist.auths?.some((providerObject) => providerObject.provider === "google")) {
-    throw new AppError(httpStatus.BAD_REQUEST, "You have already set a password. You cannot set password again");
+  if (
+    isUserExist.password &&
+    isUserExist.auths?.some(
+      (providerObject) => providerObject.provider === 'google'
+    )
+  ) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'You have already set a password. You cannot set password again'
+    );
   }
 
   const credentialProvider: IAuthProvider = {
-    provider: "credentials",
-    providerId: isUserExist.email
-  }
+    provider: 'credentials',
+    providerId: isUserExist.email,
+  };
 
-  const auths: IAuthProvider[] = [...isUserExist.auths as IAuthProvider[], credentialProvider];
+  const auths: IAuthProvider[] = [
+    ...(isUserExist.auths as IAuthProvider[]),
+    credentialProvider,
+  ];
 
   isUserExist.password = password;
   isUserExist.auths = auths;
@@ -99,7 +108,7 @@ const setPassword = async (decodedToken: JwtPayload, password: string) => {
   await isUserExist.save();
 
   return true;
-}
+};
 
 const resetPassword = async (
   payload: Record<string, any>,
@@ -125,28 +134,34 @@ const resetPassword = async (
 };
 
 const forgetPassword = async (email: string) => {
-  const isUserExist = await User.findOne({email});
+  const isUserExist = await User.findOne({ email });
 
   if (!isUserExist) {
-    throw new AppError(httpStatus.BAD_REQUEST, "User does not exist");
+    throw new AppError(httpStatus.BAD_REQUEST, 'User does not exist');
   }
-  if (!isUserExist.isVerified)  {
-    throw new AppError(httpStatus.BAD_REQUEST, "User not verified");
+  if (!isUserExist.isVerified) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'User not verified');
   }
-  if (isUserExist.isActive === IsActive.BLOCKED || isUserExist.isActive === IsActive.INACTIVE) {
-    throw new AppError(httpStatus.BAD_REQUEST, `User is ${isUserExist.isActive}`);
+  if (
+    isUserExist.isActive === IsActive.BLOCKED ||
+    isUserExist.isActive === IsActive.INACTIVE
+  ) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      `User is ${isUserExist.isActive}`
+    );
   }
   if (isUserExist.isDeleted) {
-    throw new AppError(httpStatus.BAD_REQUEST, "user is deleted");
+    throw new AppError(httpStatus.BAD_REQUEST, 'user is deleted');
   }
 
   const jwtPayload = {
     userId: isUserExist._id,
     email: isUserExist.email,
-    role: isUserExist.role
+    role: isUserExist.role,
   };
 
-  const resetToken = jwt.sign(jwtPayload, env.JWT_SECRET, { expiresIn: '10m'});
+  const resetToken = jwt.sign(jwtPayload, env.JWT_SECRET, { expiresIn: '10m' });
 
   const resetUILink = `${env.FRONTEND_URL}/reset-password?id=${isUserExist._id}&token=${resetToken}`;
   /**
@@ -155,20 +170,20 @@ const forgetPassword = async (email: string) => {
 
   sendEmail({
     to: isUserExist.email,
-    subject: "Password Reset",
-    templateName: "forgetPassword",
+    subject: 'Password Reset',
+    templateName: 'forgetPassword',
     templateData: {
       name: isUserExist.name,
-      resetUILink
-    }
-  })
+      resetUILink,
+    },
+  });
   return null;
-}
+};
 
 export const authService = {
   getNewAccessToken,
   changePassword,
   resetPassword,
   forgetPassword,
-  setPassword
+  setPassword,
 };

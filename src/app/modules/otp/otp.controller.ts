@@ -3,11 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { userOTPservice } from './otp.service';
 import { SendResponse } from '../../utils/SendResponse';
 
-const sendOTP = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const sendOTP = async (req: Request, res: Response, next: NextFunction) => {
   const { email } = req.body;
   await userOTPservice.sendOTP(email);
   SendResponse(res, {
@@ -17,11 +13,7 @@ const sendOTP = async (
     data: null,
   });
 };
-const verifyOTP = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const verifyOTP = async (req: Request, res: Response, next: NextFunction) => {
   const { otp, email } = req.body;
   await userOTPservice.verifyOTP(email, otp);
   SendResponse(res, {

@@ -59,37 +59,36 @@ const updateUser = CatchAsync(
   }
 );
 
-// Get me 
+// Get me
 const getMe = CatchAsync(async (req: Request, res: Response) => {
- const user = req.user as JwtPayload;
+  const user = req.user as JwtPayload;
   const result = await UserService.getMe(user.userId);
- 
+
   SendResponse(res, {
     success: true,
     statusCode: 200,
-    message: "User fetched success!",
-    data: result
-  })
+    message: 'User fetched success!',
+    data: result,
+  });
 });
 
 // Get single user
 const getSingleUser = CatchAsync(async (req: Request, res: Response) => {
- const { userId } = req.params;
+  const { userId } = req.params;
   const result = await UserService.getSingleUser(userId);
- 
+
   SendResponse(res, {
     success: true,
     statusCode: 200,
-    message: "User fetched success!",
-    data: result
-  })
+    message: 'User fetched success!',
+    data: result,
+  });
 });
- 
 
 export const UserControllers = {
   createUser,
   allUsers,
   updateUser,
   getMe,
-  getSingleUser
+  getSingleUser,
 };

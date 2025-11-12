@@ -42,7 +42,7 @@ const moduleRoutes = [
   {
     path: '/stats',
     route: statsRouter,
-  }
+  },
 ];
 
 moduleRoutes.forEach((r) => {
