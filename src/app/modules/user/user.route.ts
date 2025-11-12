@@ -131,4 +131,7 @@ router.patch(
   UserControllers.updateUser
 );
 
+router.get('/', checkAuth(...Object.values(Role)), UserControllers.getMe);
+router.get('/:userId', checkAuth(Role.ADMIN, Role.SUPER_ADMIN), UserControllers.getSingleUser );
+
 export const UserRoute = router;

@@ -6,6 +6,8 @@ import httpStatus from 'http-status-codes';
 import { CatchAsync } from '../../utils/CatchAsync';
 import { SendResponse } from '../../utils/SendResponse';
 import { JwtPayload } from 'jsonwebtoken';
+import { verifyToken } from '../../utils/jwt';
+import env from '../../config/env';
 
 // Create a user
 const createUser = CatchAsync(
@@ -57,8 +59,37 @@ const updateUser = CatchAsync(
   }
 );
 
+// Get me 
+const getMe = CatchAsync(async (req: Request, res: Response) => {
+ const user = req.user as JwtPayload;
+  const result = await UserService.getMe(user.userId);
+ 
+  SendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "User fetched success!",
+    data: result
+  })
+});
+
+// Get single user
+const getSingleUser = CatchAsync(async (req: Request, res: Response) => {
+ const { userId } = req.params;
+  const result = await UserService.getSingleUser(userId);
+ 
+  SendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "User fetched success!",
+    data: result
+  })
+});
+ 
+
 export const UserControllers = {
   createUser,
   allUsers,
   updateUser,
+  getMe,
+  getSingleUser
 };
