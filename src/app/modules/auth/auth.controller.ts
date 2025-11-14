@@ -176,7 +176,8 @@ const googleRegister = CatchAsync(
     });
 
     // Return URL as JSON instead of redirect
-    res.json({ url });
+    // res.json({ url });
+    res.redirect(url);
   }
 );
 
