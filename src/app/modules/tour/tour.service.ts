@@ -10,12 +10,16 @@ import { deleteImageFromCLoudinary } from '../../config/cloudinary.config';
 //============TOUR TYPE SERVICE============
 // CREATE TOUR TYPE
 const createTourType = async (payload: ITourType) => {
+  const isExist = await TourType.findOne(payload);
+  if (isExist) {
+    throw new AppError(400, `${payload.name} - already exist!`);
+  }
   return await TourType.create(payload);
 };
 
 // READ ALL TOUR TYPES
 const getTourType = async () => {
-  return await TourType.find().lean();
+  return await TourType.find().sort('-createdAt').lean();
 };
 
 // UPDATE A TOUR TYPE
