@@ -11,7 +11,7 @@ export const checkAuth =
   (...restRole: string[]) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const accessToken = req.headers.authorization;
+      const accessToken = req.headers.authorization || req.cookies.accessToken;
       const verifyUser = verifyToken(
         accessToken as string,
         env.JWT_SECRET

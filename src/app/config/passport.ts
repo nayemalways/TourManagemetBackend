@@ -8,7 +8,7 @@ import {
 } from 'passport-google-oauth20';
 import env from './env';
 import { User } from '../modules/user/user.model';
-import { Role } from '../modules/user/user.interface';
+import { IsActive, Role } from '../modules/user/user.interface';
 import { Strategy as LocalStrategy } from 'passport-local';
 import bcrypt from 'bcrypt';
 
@@ -23,8 +23,23 @@ passport.use(
       try {
         const isUserExists = await User.findOne({ email });
 
-        if (!isUserExists)
-          return done(null, false, { message: 'User does not exist!' });
+        if (!isUserExists) {
+          return done(null, false, { statusCode: 404, message: 'User does not exist!' });
+        }
+
+        if (isUserExists.isActive === IsActive.BLOCKED || isUserExists.isActive === IsActive.INACTIVE) {
+          return done(null, false, {
+            statusCode: 400,
+            message: 'User is blocked or inactive!',
+          });
+        }
+        
+        if (isUserExists.isDeleted) {
+          return done(null, false, {
+            statusCode: 400,
+            message: 'User is deleted! ',
+          });
+        }
 
         const isGoogleAuthenticated = isUserExists.auths?.some(
           (provider) => provider.provider === 'google'
@@ -32,6 +47,7 @@ passport.use(
 
         if (isGoogleAuthenticated && !isUserExists.password) {
           return done(null, false, {
+            statusCode: 400,
             message:
               'You are authenticated through Google. So if you want to login with credentials, then at first login with google and set a password to your gmail and then you can login with email and password',
           });
@@ -43,7 +59,17 @@ passport.use(
           isUserExists.password as string
         );
         if (!passwordMatch) {
-          return done(null, false, { message: 'Incorrect password!' });
+          return done(null, false, {
+            statusCode: 400,
+            message: 'Incorrect password!',
+          });
+        }
+
+        if (!isUserExists.isVerified) {
+          return done(null, false, {
+            statusCode: 401,
+            message: 'User is not verified!',
+          });
         }
 
         return done(null, isUserExists);

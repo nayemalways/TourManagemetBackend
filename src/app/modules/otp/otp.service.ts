@@ -61,7 +61,7 @@ const verifyOTP = async (email: string, otp: string) => {
     throw new AppError(401, 'Invalid OTP');
   }
   if (savedOTP !== otp) {
-    throw new AppError(401, 'Invalid OTP');
+    throw new AppError(401, "OTP didn't matched!");
   }
 
   await Promise.all([

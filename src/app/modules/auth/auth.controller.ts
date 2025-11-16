@@ -11,7 +11,7 @@ import { JwtPayload } from 'jsonwebtoken';
 import { createUserTokens } from '../../utils/user.tokens';
 import env from '../../config/env';
 import passport from 'passport';
-import { OAuth2Client } from 'google-auth-library';
+
 
 const credentialsLogin = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -23,7 +23,7 @@ const credentialsLogin = CatchAsync(
       }
 
       if (!user) {
-        return next(new AppError(httpStatus.FORBIDDEN, info.message));
+        return next(new AppError(info.statusCode, info.message));
       }
       const userTokens = await createUserTokens(user);
 
@@ -32,7 +32,7 @@ const credentialsLogin = CatchAsync(
       SendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: `Login Successfully`,
+        message: `Looged in success!`,
         data: {
           accessToken: userTokens.accessToken,
           refreshToken: userTokens.refreshToken,
@@ -142,10 +142,6 @@ const forgetPassword = CatchAsync(
 );
 
 // -----------------------GOOGLE---------------------------------------
-
-// This is my previous code: It returns a HTML Response thats why commented and newer version code is below.
-// That returns a JSON response with Google consent_screen link
-/*
 const googleRegister = CatchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const redirect = req.query?.redirect || '/';
 
@@ -157,29 +153,29 @@ const googleRegister = CatchAsync(async (req: Request, res: Response, next: Next
 
 })
 
-*/
+ 
+// ------------ALTERNATIVE GOOGLE AUTH-----------------
+// const googleRegister = CatchAsync(
+//   async (req: Request, res: Response, next: NextFunction) => {
+//     const redirect = req.query.redirect || '/';
+//     const oauth2Client = new OAuth2Client(
+//       env.GOOGLE_CLIENT_ID,
+//       env.GOOGLE_CLIENT_SECRET,
+//       env.GOOGLE_CALLBACK_URL
+//     );
 
-const googleRegister = CatchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const redirect = req.query.redirect || '/';
-    const oauth2Client = new OAuth2Client(
-      env.GOOGLE_CLIENT_ID,
-      env.GOOGLE_CLIENT_SECRET,
-      env.GOOGLE_CALLBACK_URL
-    );
+//     const url = oauth2Client.generateAuthUrl({
+//       access_type: 'offline',
+//       scope: ['profile', 'email'],
+//       prompt: 'consent',
+//       state: redirect as string,
+//     });
 
-    const url = oauth2Client.generateAuthUrl({
-      access_type: 'offline',
-      scope: ['profile', 'email'],
-      prompt: 'consent',
-      state: redirect as string,
-    });
-
-    // Return URL as JSON instead of redirect
-    // res.json({ url });
-    res.redirect(url);
-  }
-);
+//     // Return URL as JSON instead of redirect
+//     // res.json({ url });
+//     res.redirect(url);
+//   }
+// );
 
 const googleCallback = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
