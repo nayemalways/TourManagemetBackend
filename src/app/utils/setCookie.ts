@@ -12,6 +12,7 @@ export const SetCookies = (res: Response, tokenInfo: AuthTokenInfo) => {
   // Access Token
   if (tokenInfo.accessToken) {
     res.cookie('accessToken', tokenInfo.accessToken, {
+      domain: 'tourista-server-omega.vercel.app',
       httpOnly: true, // <-- secure
       secure: isProd, // HTTP/HTTPS
       sameSite: isProd ? 'none' : 'lax',
@@ -22,6 +23,7 @@ export const SetCookies = (res: Response, tokenInfo: AuthTokenInfo) => {
   // Refresh Token
   if (tokenInfo.refreshToken) {
     res.cookie('refreshToken', tokenInfo.refreshToken, {
+      domain: 'tourista-server-omega.vercel.app',
       httpOnly: true, // <-- secure
       secure: isProd, // HTTP/HTTPS
       sameSite: isProd ? 'none' : 'lax',
