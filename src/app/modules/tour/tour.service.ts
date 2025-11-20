@@ -47,6 +47,10 @@ const createTour = async (payload: ITour) => {
   const existTour = await Tour.findOne({ title: payload.title });
 
   if (existTour) {
+    payload.images?.forEach((image => {
+      deleteImageFromCLoudinary(image);
+    }))
+  
     throw new AppError(400, 'A tour with this title already exist!');
   }
 
