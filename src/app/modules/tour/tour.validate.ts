@@ -27,7 +27,7 @@ export const TourZodScehma = z.object({
     .string('endDate must be Date type')
     .transform((val) => new Date(val))
     .optional(),
-  includes: z.array(z.string('includes element must be string')).optional(),
+  included: z.array(z.string('includes element must be string')).optional(),
   excluded: z.array(z.string('excluded element must be string')).optional(),
   amenities: z.array(z.string('amenities element must be string')).optional(),
   tourPlan: z.array(z.string('tourPlan element must be string')).optional(),
