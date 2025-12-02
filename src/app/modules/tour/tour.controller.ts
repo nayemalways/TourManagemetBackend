@@ -104,11 +104,25 @@ const retriveAllTours = CatchAsync(
     SendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Tour Retrieve successful!',
+      message: 'Tours Retrieve successful!',
       data: tour?.data,
       meta: {
         ...tour?.meta,
       },
+    });
+  }
+);
+// READ ALL TOUR
+const getTourById = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { tourId } = req.params;
+    const result = await tourTypeServices.getTourById(tourId as string);
+
+    SendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Tour Retrieve successful!',
+      data:  result,
     });
   }
 );
@@ -156,4 +170,5 @@ export const tourControllers = {
   retriveAllTours,
   updateTours,
   deleteTours,
+  getTourById
 };

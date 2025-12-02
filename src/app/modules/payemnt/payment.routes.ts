@@ -7,6 +7,6 @@ router.post('/init-payment/:booking_id', paymentController.initPayment);
 router.post('/payment_success', paymentController.successPayment);
 router.post('/payment_fail', paymentController.failedPayment);
 router.post('/payment_cancel', paymentController.cancelPayment);
-router.get('/invoice/:paymentId', paymentController.downloadInvoice);
+router.get('/invoice/:paymentId/:transection_id', paymentController.downloadInvoice);
 
 export const paymentRouter = router;

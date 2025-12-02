@@ -46,9 +46,10 @@ router.post(
 
 router.get(
   '/',
-  checkAuth(...Object.values(Role)),
   tourControllers.retriveAllTours
 );
+
+router.get(`/:tourId`, tourControllers.getTourById);
 
 router.patch(
   '/:id',

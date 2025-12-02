@@ -28,6 +28,12 @@ const updateUserService = async (
   payload: Partial<IUser>,
   decodedToken: JwtPayload
 ) => {
+
+  const isUserExist = await User.findById(userId);
+  if (!isUserExist) {
+    throw new AppError(404, "No user found!");
+  }
+
   // Role Based Role Update
   if (payload?.role) {
     if (decodedToken.role === Role.USER || decodedToken.role === Role.GUIDE)
@@ -57,11 +63,14 @@ const updateUserService = async (
       );
   }
 
+  
   // Update User
   const updatedUser = await User.findOneAndUpdate({ _id: userId }, payload, {
     new: true,
     runValidators: true,
   });
+
+
   return updatedUser;
 };
 

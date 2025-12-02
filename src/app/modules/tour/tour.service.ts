@@ -131,6 +131,22 @@ const retriveAllTour = async (query: Record<string, string>) => {
 
 */
 
+
+const getTourById = async (tourId: string) => {
+  
+  if(!tourId) {
+    throw new AppError(400, "Tour Id required!");
+  }
+
+  const tour = await Tour.findById(tourId).populate("division").populate("tourType");
+
+  if(!tour) {
+    throw new AppError(400, "Tour not found!");
+  }
+
+  return tour;
+}
+
 // UPDATE TOUR
 const updateTours = async (tourId: string, payload: Partial<ITour>) => {
   const isTour = await Tour.findOne({ _id: tourId });
@@ -209,4 +225,5 @@ export const tourTypeServices = {
   retriveAllTours,
   updateTours,
   deleteTours,
+  getTourById
 };

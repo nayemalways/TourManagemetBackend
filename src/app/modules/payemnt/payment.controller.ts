@@ -25,7 +25,7 @@ const successPayment = CatchAsync(
     );
     if (result.success) {
       res.redirect(
-        `${env.CLIENT_SUCCESS_URL}/transaction_id=${query.transaction_id}&amount=${query.amount}&status=${query.status}`
+        `${env.CLIENT_SUCCESS_URL}?transection_id=${query.transection_id}&amount=${query.amount}&status=${query.status}`
       );
     }
   }
@@ -39,7 +39,7 @@ const failedPayment = CatchAsync(
 
     if (!result.success) {
       res.redirect(
-        `${env.CLIENT_FAIL_URL}/transaction_id=${query.transaction_id}&amount=${query.amount}&status=${query.status}`
+        `${env.CLIENT_FAIL_URL}?transection_id=${query.transection_id}&amount=${query.amount}&status=${query.status}`
       );
     }
   }
@@ -53,14 +53,14 @@ const cancelPayment = CatchAsync(
 
     if (!result.success) {
       res.redirect(
-        `${env.CLIENT_CANCEL_URL}/transaction_id=${query.transaction_id}&amount=${query.amount}&status=${query.status}`
+        `${env.CLIENT_CANCEL_URL}?transection_id=${query.transection_id}&amount=${query.amount}&status=${query.status}`
       );
     }
   }
 );
 
 const downloadInvoice = async (req: Request, res: Response) => {
-  const { paymentId } = req.params;
+  const { paymentId, transection_id } = req.params;
   const result = await paymentServices.getInvoiceDownloadURL(paymentId);
 
   SendResponse(res, {
