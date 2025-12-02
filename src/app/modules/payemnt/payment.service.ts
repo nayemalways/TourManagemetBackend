@@ -189,8 +189,11 @@ const paymentCancelService = async (query: Record<string, string>) => {
     throw error;
   }
 };
-const getInvoiceDownloadURL = async (paymentId: string) => {
-  const payment = await Payment.findById(paymentId);
+const getInvoiceDownloadURL = async (paymentId: string, transaction_id: string) => {
+  const payment = await Payment.findOne({
+    $or: [ {_id: paymentId}, {
+transectionId: transaction_id}]
+  })
 
   if (!payment) {
     throw new AppError(401, 'Payment not found');

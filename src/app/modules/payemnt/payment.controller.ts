@@ -60,8 +60,8 @@ const cancelPayment = CatchAsync(
 );
 
 const downloadInvoice = async (req: Request, res: Response) => {
-  const { paymentId, transection_id } = req.params;
-  const result = await paymentServices.getInvoiceDownloadURL(paymentId);
+  const { paymentId, transection_id } = req.query;
+  const result = await paymentServices.getInvoiceDownloadURL(paymentId as string, transection_id as string);
 
   SendResponse(res, {
     success: true,
