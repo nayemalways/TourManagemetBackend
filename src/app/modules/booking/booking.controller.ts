@@ -70,7 +70,7 @@ const getBookingById = CatchAsync(
 );
 const updateBookingStatus = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const status = req.body.status as Partial<IBookingStatus>;
+    const status = req.body.status as IBookingStatus;
     const bookingId = req.params.bookingId as string;
     const result = await bookingService.updateBookingStatus(bookingId, status);
 

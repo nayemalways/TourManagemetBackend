@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { model, Schema } from 'mongoose';
 import { IAuthProvider, IsActive, IUser, Role } from './user.interface';
 import bcrypt from 'bcrypt';
@@ -65,13 +66,21 @@ const userSchema = new Schema<IUser>(
 
 // Hashed password
 userSchema.pre('save', async function (next) {
-  if (!this?.password) next();
-  const hashedPassword = await bcrypt.hash(
-    this.password as string,
-    parseInt(env?.BCRYPT_SALT_ROUND)
-  );
-  this.password = hashedPassword;
-  next();
+  // only hash the password if it has been modified (or is new)
+  if (!this.isModified('password') || !this.password) {
+    return next();
+  }
+
+  try {
+    const hashedPassword = await bcrypt.hash(
+      this.password as string,
+      parseInt(env?.BCRYPT_SALT_ROUND)
+    );
+    this.password = hashedPassword;
+    next();
+  } catch (err: any) {
+    next(err);
+  }
 });
 
 export const User = model<IUser>('User', userSchema);

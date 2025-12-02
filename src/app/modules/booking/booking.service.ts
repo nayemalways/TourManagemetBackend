@@ -146,7 +146,7 @@ const getUserBookings = async (
 // UPDATE BOOKING STATUS
 const updateBookingStatus = async (
   bookingId: string,
-  status: Partial<IBookingStatus>
+  status: IBookingStatus
 ) => {
   const booking = await Booking.findOne({ _id: bookingId });
 
