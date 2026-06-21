@@ -33,10 +33,7 @@ interface EnvInterfaces {
   BACKEND_FAIL_URL: string;
   BACKEND_CANCEL_URL: string;
 
-  REDIS_HOST: string;
-  REDIS_PORT: string;
-  REDIS_USERNAME: string;
-  REDIS_PASSWORD: string;
+  REDIS_URL: string;
 
   EMAIL_HOST: string;
   EMAIL_PORT: string;
@@ -44,41 +41,48 @@ interface EnvInterfaces {
   EMAIL_PASSWORD: string;
 }
 
-const loadEnvVarbles = (): EnvInterfaces => {
+const loadEnvVariables = (): EnvInterfaces => {
   const requireEnvVariables: string[] = [
     'PORT',
     'MONGO_URI',
-    'JWT_SECRET',
     'NODE_ENV',
+
     'JWT_SECRET',
     'JWT_EXPIRATION',
     'JWT_REFRESH_SECRET',
     'JWT_REFRESH_EXPIRATION',
     'BCRYPT_SALT_ROUND',
+
     'SUPER_ADMIN_PASSWORD',
     'SUPER_ADMIN_GMAIL',
+    
     'FRONTEND_URL',
+    'EXPRESS_SESSION_SECRET',
+    'REDIS_URL',
+
     'GOOGLE_CLIENT_SECRET',
     'GOOGLE_CLIENT_ID',
     'GOOGLE_CALLBACK_URL',
-    'EXPRESS_SESSION_SECRET',
+
+
     'CLOUDINARY_NAME',
     'CLOUDINARY_SECRET',
     'CLOUDINARY_API_KEY',
+
     'STORE_ID',
     'STORE_PASSWORD',
     'SSL_PAYMENT_API',
     'SSL_VALIDATION_API',
+
     'CLIENT_SUCCESS_URL',
     'CLIENT_FAIL_URL',
     'CLIENT_CANCEL_URL',
+
     'BACKEND_SUCCESS_URL',
     'BACKEND_FAIL_URL',
     'BACKEND_CANCEL_URL',
-    'REDIS_HOST',
-    'REDIS_PORT',
-    'REDIS_USERNAME',
-    'REDIS_PASSWORD',
+
+
     'EMAIL_HOST',
     'EMAIL_PORT',
     'EMAIL_USER',
@@ -127,10 +131,7 @@ const loadEnvVarbles = (): EnvInterfaces => {
     BACKEND_FAIL_URL: process.env.BACKEND_FAIL_URL as string,
     BACKEND_CANCEL_URL: process.env.BACKEND_CANCEL_URL as string,
 
-    REDIS_HOST: process.env.REDIS_HOST as string,
-    REDIS_PORT: process.env.REDIS_PORT as string,
-    REDIS_USERNAME: process.env.REDIS_USERNAME as string,
-    REDIS_PASSWORD: process.env.REDIS_PASSWORD as string,
+    REDIS_URL: process.env.REDIS_URL as string,
 
     EMAIL_PASSWORD: process.env.EMAIL_PASSWORD as string,
     EMAIL_USER: process.env.EMAIL_USER as string,
@@ -139,4 +140,4 @@ const loadEnvVarbles = (): EnvInterfaces => {
   };
 };
 
-export default loadEnvVarbles();
+export default loadEnvVariables();

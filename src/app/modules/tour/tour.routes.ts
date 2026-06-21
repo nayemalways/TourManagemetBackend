@@ -46,7 +46,7 @@ router.post(
 
 router.get(
   '/',
-  tourControllers.retriveAllTours
+  tourControllers.retrieveAllTours
 );
 
 router.get(`/:tourId`, tourControllers.getTourById);

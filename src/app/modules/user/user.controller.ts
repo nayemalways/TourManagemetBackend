@@ -6,8 +6,7 @@ import httpStatus from 'http-status-codes';
 import { CatchAsync } from '../../utils/CatchAsync';
 import { SendResponse } from '../../utils/SendResponse';
 import { JwtPayload } from 'jsonwebtoken';
-import { verifyToken } from '../../utils/jwt';
-import env from '../../config/env';
+
 
 // Create a user
 const createUser = CatchAsync(
@@ -32,7 +31,7 @@ const allUsers = CatchAsync(
     SendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: `User Retrive Successfully`,
+      message: `User Retrieved Successfully`,
       data: users,
     });
   }
@@ -41,7 +40,7 @@ const allUsers = CatchAsync(
 // Update single users
 const updateUser = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.params.userId;
+    const userId = req.params.userId as string;
     const payload = req.body;
     const decodedToken = req.user as JwtPayload; // From auth.middleware.ts
     const users = await UserService.updateUserService(
@@ -75,7 +74,7 @@ const getMe = CatchAsync(async (req: Request, res: Response) => {
 // Get single user
 const getSingleUser = CatchAsync(async (req: Request, res: Response) => {
   const { userId } = req.params;
-  const result = await UserService.getSingleUser(userId);
+  const result = await UserService.getSingleUser(userId as string);
 
   SendResponse(res, {
     success: true,

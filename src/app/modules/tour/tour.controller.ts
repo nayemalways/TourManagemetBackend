@@ -37,7 +37,7 @@ const getTourType = CatchAsync(
 // UPDATE TOUR TYPE
 const updateTourType = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const tourTypeId = req.params.id;
+    const tourTypeId = req.params.id as string;
     const tourTypes = await tourTypeServices.updateTourType(
       tourTypeId,
       req.body
@@ -54,7 +54,7 @@ const updateTourType = CatchAsync(
 // DELETE TOUR TYPE
 const deleteTourType = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const tourTypeId = req.params.id;
+    const tourTypeId = req.params.id as string;
     const tourTypes = await tourTypeServices.deleteTourType(tourTypeId);
     SendResponse(res, {
       statusCode: httpStatus.OK,
@@ -94,7 +94,7 @@ const createTour = CatchAsync(
 );
 
 // READ ALL TOUR
-const retriveAllTours = CatchAsync(
+const retrieveAllTours = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const query = req.query;
     const tour = await tourTypeServices.retriveAllTours(
@@ -136,7 +136,7 @@ const updateTours = CatchAsync(
       images: (req.files as Express.Multer.File[]).map((file) => file.path),
     };
 
-    const tour = await tourTypeServices.updateTours(id, payload);
+    const tour = await tourTypeServices.updateTours(id as string, payload);
 
     SendResponse(res, {
       statusCode: httpStatus.OK,
@@ -150,7 +150,8 @@ const updateTours = CatchAsync(
 // DELETE TOUR
 const deleteTours = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const tour = await tourTypeServices.deleteTours(req.params.id);
+    const tourId = req.params.id as string;
+    const tour = await tourTypeServices.deleteTours(tourId);
 
     SendResponse(res, {
       statusCode: httpStatus.OK,
@@ -167,7 +168,7 @@ export const tourControllers = {
   updateTourType,
   deleteTourType,
   createTour,
-  retriveAllTours,
+  retrieveAllTours,
   updateTours,
   deleteTours,
   getTourById

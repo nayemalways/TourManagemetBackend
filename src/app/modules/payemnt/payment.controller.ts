@@ -9,7 +9,7 @@ import httpStatus from 'http-status-codes';
 // Manual Payment Init
 const initPayment = CatchAsync(async (req: Request, res: Response) => {
   const { booking_id } = req.params;
-  const result = await paymentServices.initPayment(booking_id);
+  const result = await paymentServices.initPayment(booking_id as string);
   SendResponse(res, {
     success: true,
     statusCode: httpStatus.CREATED,
