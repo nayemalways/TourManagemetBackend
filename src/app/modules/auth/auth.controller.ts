@@ -154,29 +154,6 @@ const googleRegister = CatchAsync(async (req: Request, res: Response, next: Next
 
 })
 
- 
-// ------------ALTERNATIVE GOOGLE AUTH-----------------
-// const googleRegister = CatchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const redirect = req.query.redirect || '/';
-//     const oauth2Client = new OAuth2Client(
-//       env.GOOGLE_CLIENT_ID,
-//       env.GOOGLE_CLIENT_SECRET,
-//       env.GOOGLE_CALLBACK_URL
-//     );
-
-//     const url = oauth2Client.generateAuthUrl({
-//       access_type: 'offline',
-//       scope: ['profile', 'email'],
-//       prompt: 'consent',
-//       state: redirect as string,
-//     });
-
-//     // Return URL as JSON instead of redirect
-//     // res.json({ url });
-//     res.redirect(url);
-//   }
-// );
 
 const googleCallback = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {

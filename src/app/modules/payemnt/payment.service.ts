@@ -46,14 +46,14 @@ const initPayment = async (bookingId: string) => {
   return { paymentURL };
 };
 const paymentSuccessService = async (query: Record<string, string>) => {
-  const transection_id = query.transection_id;
+  const transaction_id = query.transection_id;
 
   const session = await Booking.startSession();
   session.startTransaction();
 
   try {
     const updatePayment = await Payment.findOneAndUpdate(
-      { transectionId: transection_id },
+      { transectionId: transaction_id },
       { status: PAYEMNT_STATUS.PAID },
       { new: true, runValidators: true, session }
     );
@@ -103,7 +103,8 @@ const paymentSuccessService = async (query: Record<string, string>) => {
 
     invoiceData.invoiceURL = paymentUpdateByInvoiceURL?.invoiceURL as string;
 
-    await sendEmail({
+    setImmediate( async () => {
+      await sendEmail({
       to: (updateBooking.user as unknown as IUser).email,
       subject: 'Your Booking Invoice',
       templateName: 'invoice',
@@ -116,19 +117,20 @@ const paymentSuccessService = async (query: Record<string, string>) => {
         },
       ],
     });
+    })
 
     await session.commitTransaction();
     session.endSession();
 
-    return { success: true, message: 'Payment Completed Successfully!' };
+    return { success: true, message: 'Payment success!' };
   } catch (error: any) {
     await session.abortTransaction();
     session.endSession();
     console.log('Tour payment failed', error.message);
-    // throw new AppError(httpStatus.BAD_REQUEST, error) ❌❌
     throw error;
   }
 };
+
 const paymentFailService = async (query: Record<string, string>) => {
   const transection_id = query.transection_id;
 
@@ -159,6 +161,7 @@ const paymentFailService = async (query: Record<string, string>) => {
     throw error;
   }
 };
+
 const paymentCancelService = async (query: Record<string, string>) => {
   const transection_id = query.transection_id;
 
@@ -189,6 +192,7 @@ const paymentCancelService = async (query: Record<string, string>) => {
     throw error;
   }
 };
+
 const getInvoiceDownloadURL = async (paymentId: string, transaction_id: string) => {
   const payment = await Payment.findOne({
     $or: [ {_id: paymentId}, {

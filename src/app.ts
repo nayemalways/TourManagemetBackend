@@ -12,6 +12,8 @@ import { swaggerSpec, swaggorUI } from './app/config/swaggor.config';
 
 const app = express();
 
+app.set("trust proxy", 1);
+
 app.use(
   expressSession({
     secret: env.EXPRESS_SESSION_SECRET,
@@ -21,7 +23,6 @@ app.use(
 );
 app.use(passport.initialize()); // Initialized passport
 app.use(passport.session()); // Create a session and handled all the thing
-app.set("trust proxy", 1);
 app.use(express.json({limit: '20mb'}));
 app.use(cors({
   origin: env.FRONTEND_URL,
